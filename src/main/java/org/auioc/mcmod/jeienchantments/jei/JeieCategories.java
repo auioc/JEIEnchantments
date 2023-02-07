@@ -2,6 +2,7 @@ package org.auioc.mcmod.jeienchantments.jei;
 
 import org.auioc.mcmod.jeienchantments.JEIEnchantments;
 import org.auioc.mcmod.jeienchantments.jei.recipe.DescriptionRecipe;
+import org.auioc.mcmod.jeienchantments.jei.recipe.IncompatibilityRecipe;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -10,6 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public final class JeieCategories {
 
     public static final RecipeType<DescriptionRecipe> DESCRIPTION = create("description", DescriptionRecipe.class);
+    public static final RecipeType<IncompatibilityRecipe> INCOMPATIBILITY = create("incompatibility", IncompatibilityRecipe.class);
 
     // ====================================================================== //
 

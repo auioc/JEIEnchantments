@@ -130,5 +130,6 @@
     "enchantment.level.128": "CXXVIII",
     "enchantment.level.2147483647": "∞",
 
-    "gui.jeienchantments.category.description": "Enchantment Description"
+    "gui.jeienchantments.category.description": "Enchantment Description",
+    "gui.jeienchantments.category.incompatibility": "Incompatible Enchantments"
 }

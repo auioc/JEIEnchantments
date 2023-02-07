@@ -1,3 +1,4 @@
 {
-    "gui.jeienchantments.category.description": "附魔描述"
+    "gui.jeienchantments.category.description": "附魔描述",
+    "gui.jeienchantments.category.incompatibility": "附魔冲突"
 }
