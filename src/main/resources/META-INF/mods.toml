@@ -1,0 +1,35 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="GNU GPLv3"
+issueTrackerURL="https://github.com/auioc/JEIEnchantments/issues"
+
+[[mods]]
+modId="jeienchantments"
+version="${file.jarVersion}"
+updateJSONURL="https://hi.auioc.org/JEIEnchantments/update/1.18.2.json"
+displayName="JEIEnchantments"
+displayURL="http://hi.auioc.org/JEIEnchantments/"
+credits="AUIOC"
+authors="WakelssSloth56"
+description='''
+JEI Enchantments
+'''
+
+[[dependencies.jeienchantments]]
+    modId="forge"
+    mandatory=true
+    versionRange="[40.2.0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.jeienchantments]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2,1.19)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.jeienchantments]]
+    modId="jei"
+    mandatory=true
+    versionRange="[10.0.0.000,)"
+    ordering="NONE"
+    side="BOTH"
