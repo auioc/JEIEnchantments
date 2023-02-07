@@ -1,12 +1,18 @@
 package org.auioc.mcmod.jeienchantments.utils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.IntStream;
+import org.auioc.mcmod.jeienchantments.JEIEnchantments;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.locale.Language;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
@@ -16,8 +22,38 @@ import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class Utils {
+
+    public static List<EnchantmentInfo> createEnchantmentInfos() {
+        var itemStacks = ForgeRegistries.ITEMS.getValues().parallelStream().map(ItemStack::new).toList();
+        var enchantments = ForgeRegistries.ENCHANTMENTS.getValues();
+        return enchantments
+            .parallelStream()
+            .map(
+                (enchantment) -> new EnchantmentInfo(
+                    enchantment,
+                    filterItem(itemStacks, enchantment),
+                    filterEnch(enchantments, enchantment)
+                )
+            )
+            .toList();
+    }
+
+    private static List<AppliableItem> filterItem(List<ItemStack> itemStacks, Enchantment enchantment) {
+        return itemStacks
+            .parallelStream()
+            .map((itemStack) -> new AppliableItem(itemStack.getItem(), enchantment.canEnchant(itemStack), enchantment.canApplyAtEnchantingTable(itemStack)))
+            .filter((appliableItem) -> appliableItem.canApply() || appliableItem.canApplyAtTable())
+            .toList();
+    }
+
+    private static List<Enchantment> filterEnch(Collection<Enchantment> enchantments, Enchantment enchantment) {
+        return enchantments.parallelStream().filter((other) -> !enchantment.isCompatibleWith(other)).toList();
+    }
+
+    // ====================================================================== //
 
     public static List<ItemStack> createBooks(Enchantment enchantment) {
         return IntStream.range(1, enchantment.getMaxLevel() + 1)
@@ -78,6 +114,49 @@ public class Utils {
 
     // ====================================================================== //
 
+    public static MutableComponent guiText(String key) {
+        return i10n("gui." + JEIEnchantments.MOD_ID + ".text." + key);
+    }
+
+    // ====================================================================== //
+
+    /**
+     * @see <a href="https://github.com/auioc/arnicalib-mcmod/blob/439877bc4f68aa73c74fc5631c1ab50891ffa767/src/main/java/org/auioc/mcmod/arnicalib/game/chat/TextUtils.java#L48-L59">ArnicaLib: TextUtils.java</a>
+     */
+    public static MutableComponent joinText(List<Component> texts, Component separator) {
+        var r = text("");
+        if (texts.isEmpty()) return r;
+
+        int s = texts.size();
+        for (int i = 0, l = s - 1; i < l; ++i) {
+            r.append(texts.get(i)).append(separator);
+        }
+        r.append(texts.get(s - 1));
+
+        return r;
+    }
+
+    public static MutableComponent joinText(List<Component> texts) {
+        return joinText(texts, text(", "));
+    }
+
+    /**
+     * @see <a href="https://github.com/auioc/arnicalib-mcmod/blob/439877bc4f68aa73c74fc5631c1ab50891ffa767/src/main/java/org/auioc/mcmod/arnicalib/game/chat/TextUtils.java#L35-L37">ArnicaLib: TextUtils.java</a>
+     */
+    public static Style copyableText(Style style, String c) {
+        return style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, c)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, i10n("chat.copy.click")));
+    }
+
+    public static MutableComponent copyableText(Component c) {
+        return text("").append(c).withStyle((s) -> copyableText(s, c.getString()));
+    }
+
+    public static Style hoverText(Style style, Component c) {
+        return style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, c));
+    }
+
+    // ====================================================================== //
+
     public static int drawCharSequence(PoseStack poseStack, Font font, List<FormattedCharSequence> lines, int x, int y, int lineHeight, int color) {
         for (var line : lines) {
             font.draw(poseStack, line, x, y, color);
@@ -102,6 +181,27 @@ public class Utils {
 
     public static void drawCenteredText(PoseStack poseStack, Font font, String text, int x, int y, int color) {
         font.draw(poseStack, text, (float) (x - font.width(text) / 2), (float) y, color);
+    }
+
+    // ====================================================================== //
+
+    public static void drawTable(PoseStack poseStack, int x0, int y0, int[] cols, int[] rows, int color) {
+        int tableWidth = IntStream.of(cols).sum();
+        int tableHeight = IntStream.of(rows).sum();
+        GuiComponent.fill(poseStack, x0, y0, x0 + tableWidth, y0 + 1, color);
+        GuiComponent.fill(poseStack, x0, y0, x0 + 1, y0 + tableHeight + 1, color);
+
+        int y = y0;
+        for (int row = 0; row < rows.length; ++row) {
+            y += rows[row];
+            GuiComponent.fill(poseStack, x0, y, x0 + tableWidth, y + 1, color);
+        }
+
+        int x = x0;
+        for (int col = 0; col < cols.length; ++col) {
+            x += cols[col];
+            GuiComponent.fill(poseStack, x, y0, x + 1, y0 + tableHeight + 1, color);
+        }
     }
 
 }
