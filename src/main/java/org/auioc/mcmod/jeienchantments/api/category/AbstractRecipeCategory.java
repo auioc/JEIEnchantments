@@ -13,8 +13,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -27,7 +25,6 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
     protected final IDrawable slot;
     protected final IDrawable background;
     protected final Font font;
-    protected final IDrawable icon;
     protected final int width;
     protected final int height;
 
@@ -45,7 +42,6 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
         this.height = height;
         this.background = guiHelper.createBlankDrawable(width, height);
         this.slot = guiHelper.getSlotDrawable();
-        this.icon = guiHelper.createDrawableItemStack(new ItemStack(Items.ENCHANTED_BOOK));
         this.font = Minecraft.getInstance().font;
     }
 
@@ -78,7 +74,7 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
     public IDrawable getBackground() { return this.background; }
 
     @Override
-    public IDrawable getIcon() { return this.icon; }
+    public IDrawable getIcon() { return null; }
 
     // ====================================================================== //
 

@@ -17,7 +17,7 @@ public class DescriptionCategory extends AbstractEnchantmentCategory<Description
     public static final int FOOTER_HEIGHT = OFFSET_4 * 3;
 
     public DescriptionCategory(IGuiHelper guiHelper) {
-        super(JeieCategories.DESCRIPTION, guiHelper, WIDTH, HEIGHT);
+        super(JeieCategories.DESCRIPTION, guiHelper);
     }
 
     @Override

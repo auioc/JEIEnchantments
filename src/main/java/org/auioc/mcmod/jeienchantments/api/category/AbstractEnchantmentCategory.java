@@ -4,6 +4,7 @@ import org.auioc.mcmod.jeienchantments.api.IEnchantmentRecord;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -12,6 +13,8 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,12 +28,11 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord> 
     public static final int HEADER_TEXT_WIDTH = WIDTH - SLOT_SIZE - (OFFSET_4 * 2);
     public static final int COLOR_GARY = 0xFFA1A1A1;
 
-    protected AbstractEnchantmentCategory(RecipeType<T> type, IGuiHelper guiHelper, int width, int height) {
-        super(type, guiHelper, width, height);
-    }
+    protected final IDrawable icon;
 
     protected AbstractEnchantmentCategory(RecipeType<T> type, IGuiHelper guiHelper) {
-        super(type, guiHelper);
+        super(type, guiHelper, WIDTH, HEIGHT);
+        this.icon = guiHelper.createDrawableItemStack(new ItemStack(Items.ENCHANTED_BOOK));
     }
 
     @Override
@@ -58,6 +60,9 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord> 
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, OFFSET_4 + OFFSET_1, OFFSET_4 + OFFSET_1).addItemStacks(Utils.createBooks(recipe.enchantment()));
     }
+
+    @Override
+    public IDrawable getIcon() { return this.icon; }
 
     // ====================================================================== //
 
