@@ -9,10 +9,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.locale.Language;
-import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
@@ -104,15 +102,16 @@ public class Utils {
     }
 
     public static MutableComponent desc(Enchantment enchantment) {
-        return i10n(enchantment.getDescriptionId() + ".desc");
+        var key = enchantment.getDescriptionId() + ".desc";
+        return (Language.getInstance().has(key)) ? i10n(key) : guiText("missing_description").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC);
     }
 
     public static MutableComponent lvlText(int lvl) {
         return i10n("enchantment.level." + lvl);
     }
 
-    public static MutableComponent rarityText(String rarity) {
-        return i10n("enchantment.rarity." + rarity);
+    public static MutableComponent rarityText(Enchantment enchantment) {
+        return i10n("enchantment.rarity." + enchantment.getRarity().name().toLowerCase());
     }
 
     // ====================================================================== //
@@ -143,19 +142,10 @@ public class Utils {
         return joinText(texts, text(", "));
     }
 
-    /**
-     * @see <a href="https://github.com/auioc/arnicalib-mcmod/blob/439877bc4f68aa73c74fc5631c1ab50891ffa767/src/main/java/org/auioc/mcmod/arnicalib/game/chat/TextUtils.java#L35-L37">ArnicaLib: TextUtils.java</a>
-     */
-    public static Style copyableText(Style style, String c) {
-        return style.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, c)).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, i10n("chat.copy.click")));
-    }
+    // ====================================================================== //
 
-    public static MutableComponent copyableText(Component c) {
-        return text("").append(c).withStyle((s) -> copyableText(s, c.getString()));
-    }
-
-    public static Style hoverText(Style style, Component c) {
-        return style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, c));
+    public static List<FormattedText> splitText(FormattedText text, Font font, int width) {
+        return font.getSplitter().splitLines(text, width, Style.EMPTY);
     }
 
     // ====================================================================== //

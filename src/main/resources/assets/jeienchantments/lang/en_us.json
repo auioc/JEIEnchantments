@@ -130,6 +130,19 @@
     "enchantment.level.128": "CXXVIII",
     "enchantment.level.2147483647": "∞",
 
+    "enchantment.rarity.common": "Common",
+    "enchantment.rarity.uncommon": "Uncommon",
+    "enchantment.rarity.rare": "Rare",
+    "enchantment.rarity.very_rare": "Very rare",
+
     "gui.jeienchantments.category.description": "Enchantment Description",
-    "gui.jeienchantments.category.incompatibility": "Incompatible Enchantments"
+    "gui.jeienchantments.category.incompatibility": "Incompatible Enchantments",
+    "gui.jeienchantments.category.appliable_items": "Enchantment Appliable Items",
+
+    "gui.jeienchantments.text.missing_description": "No description found.",
+    "gui.jeienchantments.text.curse": "Curse",
+    "gui.jeienchantments.text.discoverable": "Discoverable",
+    "gui.jeienchantments.text.tradeable": "Tradeable",
+    "gui.jeienchantments.text.treasure_only": "Treasure only",
+    "gui.jeienchantments.text.allowed_on_books": "Allowed on books"
 }
