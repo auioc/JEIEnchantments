@@ -3,6 +3,7 @@ package org.auioc.mcmod.jeienchantments.jei.recipe;
 import java.util.ArrayList;
 import java.util.List;
 import org.auioc.mcmod.jeienchantments.api.IEnchantmentRecord;
+import org.auioc.mcmod.jeienchantments.api.IPaginatedRecord;
 import org.auioc.mcmod.jeienchantments.jei.category.DescriptionCategory;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import net.minecraft.client.Minecraft;
@@ -13,7 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public record DescriptionRecipe(Enchantment enchantment, List<FormattedText> description, int page, int pageCount) implements IEnchantmentRecord {
+public record DescriptionRecipe(Enchantment enchantment, List<FormattedText> description, int page, int pageCount) implements IEnchantmentRecord, IPaginatedRecord {
 
     @SuppressWarnings("resource")
     public static List<DescriptionRecipe> create(Enchantment enchantment) {
