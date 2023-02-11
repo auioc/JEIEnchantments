@@ -120,6 +120,18 @@ public class Utils {
         return i10n("gui." + JEIEnchantments.MOD_ID + ".text." + key);
     }
 
+    public static MutableComponent guiListMarker() {
+        return guiText("list_marker");
+    }
+
+    public static MutableComponent guiListMarker(String key) {
+        return guiListMarker().append(guiText(key));
+    }
+
+    public static MutableComponent guiYesNo(boolean _bool) {
+        return guiText(_bool ? "yes" : "no");
+    }
+
     // ====================================================================== //
 
     /**

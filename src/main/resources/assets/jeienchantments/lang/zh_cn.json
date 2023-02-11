@@ -1,18 +1,18 @@
 {
-    "enchantment.rarity.common": "常见",
-    "enchantment.rarity.uncommon": "少见",
-    "enchantment.rarity.rare": "稀有",
-    "enchantment.rarity.very_rare": "罕见",
+    "enchantment.rarity.common": "§2§l常见",
+    "enchantment.rarity.uncommon": "§e§l少见",
+    "enchantment.rarity.rare": "§3§l稀有",
+    "enchantment.rarity.very_rare": "§5§l罕见",
 
     "gui.jeienchantments.category.description": "附魔描述",
     "gui.jeienchantments.category.incompatibility": "附魔冲突",
     "gui.jeienchantments.category.appliable_items": "附魔可用物品",
 
     "gui.jeienchantments.text.missing_description": "没有可用描述。",
+    "gui.jeienchantments.text.list_marker": "• ",
+    "gui.jeienchantments.text.yes": "§2§l是",
+    "gui.jeienchantments.text.no": "§c§l否",
     "gui.jeienchantments.text.rarity": "稀有度：",
-    "gui.jeienchantments.text.curse": "诅咒魔咒",
-    "gui.jeienchantments.text.discoverable": "可发现",
-    "gui.jeienchantments.text.tradeable": "可交易",
-    "gui.jeienchantments.text.treasure_only": "宝藏型魔咒",
-    "gui.jeienchantments.text.allowed_on_books": "允许附魔书"
+    "gui.jeienchantments.text.tradeable": "可交易：",
+    "gui.jeienchantments.text.treasure_only": "宝藏型魔咒："
 }
