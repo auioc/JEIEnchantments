@@ -32,7 +32,7 @@ public record DescriptionRecipe(Enchantment enchantment, List<FormattedText> des
         }
 
         var lineCount = lines.size();
-        int maxLines = (DescriptionCategory.HEIGHT - DescriptionCategory.calcHeaderHeight(font, enchantment) - DescriptionCategory.FOOTER_HEIGHT) / font.lineHeight;
+        int maxLines = DescriptionCategory.calcContentHeight(enchantment, font) / (font.lineHeight + DescriptionCategory.TEXT_ROW_SPACING);
         int pageCount = (int) Math.ceil((float) lines.size() / maxLines);
 
         var recipes = new ArrayList<DescriptionRecipe>();

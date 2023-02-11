@@ -19,7 +19,7 @@ public class DescriptionCategory extends AbstractEnchantmentCategory<Description
 
     @Override
     protected void drawContent(DescriptionRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY, int textY, int textWidth) {
-        Utils.drawMultilineText(poseStack, font, recipe.description(), OFFSET_4, textY, font.lineHeight, 0);
+        Utils.drawMultilineText(poseStack, font, recipe.description(), OFFSET_4, textY, font.lineHeight + TEXT_ROW_SPACING, 0);
     }
 
 }
