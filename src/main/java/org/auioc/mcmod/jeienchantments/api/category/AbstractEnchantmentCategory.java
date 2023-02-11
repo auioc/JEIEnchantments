@@ -26,6 +26,7 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
     public static final int WIDTH = AbstractRecipeCategory.DEFAULT_WIDTH;
     public static final int HEIGHT = AbstractRecipeCategory.DEFAULT_HEIGHT;
     public static final int TEXT_WIDTH = WIDTH - OFFSET_4;
+    public static final int TEXT_ROW_SPACING = 1;
     public static final int HEADER_TEXT_WIDTH = WIDTH - SLOT_SIZE - (OFFSET_4 * 2);
     public static final int FOOTER_HEIGHT = OFFSET_4 * 3;
     public static final int COLOR_GARY = 0xFFA1A1A1;
@@ -91,11 +92,15 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     // ====================================================================== //
 
-    public static int calcHeaderHeight(Font font, Enchantment enchantment) {
+    public static int calcHeaderHeight(Enchantment enchantment, Font font) {
         int h = SLOT_SIZE + (OFFSET_4 * 3);
         h += (font.split(Utils.nameWithLevels(enchantment), HEADER_TEXT_WIDTH).size() - 1) * font.lineHeight;
         h += (font.split(Utils.idText(enchantment), HEADER_TEXT_WIDTH).size() - 1) * font.lineHeight;
         return h;
+    }
+
+    public static int calcContentHeight(Enchantment enchantment, Font font) {
+        return HEIGHT - calcHeaderHeight(enchantment, font) - FOOTER_HEIGHT;
     }
 
 }

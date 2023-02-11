@@ -4,6 +4,8 @@
     "enchantment.rarity.rare": "§3§l稀有",
     "enchantment.rarity.very_rare": "§5§l罕见",
 
+    "jeienchantments.tooltip.show_description": "显示全部附魔描述",
+
     "gui.jeienchantments.category.description": "附魔描述",
     "gui.jeienchantments.category.incompatibility": "附魔冲突",
     "gui.jeienchantments.category.appliable_items": "附魔可用物品",

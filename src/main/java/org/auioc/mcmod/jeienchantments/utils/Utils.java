@@ -116,6 +116,10 @@ public class Utils {
 
     // ====================================================================== //
 
+    public static MutableComponent tooltip(String key) {
+        return i10n(JEIEnchantments.MOD_ID + ".tooltip." + key);
+    }
+
     public static MutableComponent guiText(String key) {
         return i10n("gui." + JEIEnchantments.MOD_ID + ".text." + key);
     }

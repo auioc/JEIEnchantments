@@ -135,6 +135,8 @@
     "enchantment.rarity.rare": "§3Rare",
     "enchantment.rarity.very_rare": "§5Very rare",
 
+    "jeienchantments.tooltip.show_description": "Show Enchantment Descriptions",
+
     "gui.jeienchantments.category.description": "Enchantment Description",
     "gui.jeienchantments.category.incompatibility": "Incompatible Enchantments",
     "gui.jeienchantments.category.appliable_items": "Enchantment Appliable Items",
