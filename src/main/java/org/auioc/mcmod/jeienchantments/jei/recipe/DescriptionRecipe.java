@@ -36,9 +36,9 @@ public record DescriptionRecipe(Enchantment enchantment, List<FormattedText> des
         int pageCount = (int) Math.ceil((float) lines.size() / maxLines);
 
         var recipes = new ArrayList<DescriptionRecipe>();
-        for (int i = 0; i < pageCount; ++i) {
-            var description = lines.subList(i * maxLines, Math.min((i + 1) * maxLines, lineCount));
-            recipes.add(new DescriptionRecipe(enchantment, description, (i + 1), pageCount));
+        for (int p = 0; p < pageCount; ++p) {
+            var description = lines.subList(p * maxLines, Math.min((p + 1) * maxLines, lineCount));
+            recipes.add(new DescriptionRecipe(enchantment, description, (p + 1), pageCount));
         }
 
         return recipes;

@@ -50,7 +50,7 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     @Override
     public final void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, OFFSET_4 + OFFSET_1, OFFSET_4 + OFFSET_1).addItemStacks(Utils.createBooks(recipe.enchantment()));
+        builder.addSlot(RecipeIngredientRole.INPUT, OFFSET_4 + SLOT_PADDING, OFFSET_4 + SLOT_PADDING).addItemStacks(Utils.createBooks(recipe.enchantment()));
         setAdditionalRecipe(builder, recipe, focuses);
     }
 

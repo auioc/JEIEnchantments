@@ -31,6 +31,7 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
     public static final int DEFAULT_WIDTH = 160;
     public static final int DEFAULT_HEIGHT = 125;
     public static final int SLOT_SIZE = 18;
+    public static final int SLOT_PADDING = 1;
     public static final int OFFSET_1 = 1;
     public static final int OFFSET_2 = 2;
     public static final int OFFSET_4 = 4;

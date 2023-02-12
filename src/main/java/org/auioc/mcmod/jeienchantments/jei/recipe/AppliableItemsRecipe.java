@@ -1,5 +1,6 @@
 package org.auioc.mcmod.jeienchantments.jei.recipe;
 
+import static org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory.SLOT_PADDING;
 import static org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory.SLOT_SIZE;
 import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_PRE_PAGE;
 import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_PRE_ROW;
@@ -40,12 +41,12 @@ public record AppliableItemsRecipe(Enchantment enchantment, Map<AppliableItem, I
         int y = DescriptionCategory.calcHeaderHeight(enchantment, font);
 
         var recipes = new ArrayList<AppliableItemsRecipe>();
-        for (int page = 0; page < pageCount; ++page) {
+        for (int p = 0; p < pageCount; ++p) {
             recipes.add(
                 createPage(
                     enchantment,
-                    items.subList(page * SLOTS_PRE_PAGE, Math.min((page + 1) * SLOTS_PRE_PAGE, itemCount)),
-                    y, page, pageCount
+                    items.subList(p * SLOTS_PRE_PAGE, Math.min((p + 1) * SLOTS_PRE_PAGE, itemCount)),
+                    y, p + 1, pageCount
                 )
             );
         }
@@ -62,12 +63,15 @@ public record AppliableItemsRecipe(Enchantment enchantment, Map<AppliableItem, I
             for (int c = 0; c < SLOTS_PRE_ROW; c++) {
                 int i = r * SLOTS_PRE_ROW + c;
                 if (i < itemCount) {
-                    map.put(items.get(i), new IntPair(c * SLOT_SIZE + SLOTS_X_OFFSET + 1, r * SLOT_SIZE + y + SLOTS_Y_OFFSET + 1));
+                    map.put(
+                        items.get(i),
+                        new IntPair((c * SLOT_SIZE + SLOTS_X_OFFSET + SLOT_PADDING), (r * SLOT_SIZE + y + SLOTS_Y_OFFSET + SLOT_PADDING))
+                    );
                 }
             }
         }
 
-        return new AppliableItemsRecipe(enchantment, map, (page + 1), pageCount);
+        return new AppliableItemsRecipe(enchantment, map, page, pageCount);
     }
 
 }
