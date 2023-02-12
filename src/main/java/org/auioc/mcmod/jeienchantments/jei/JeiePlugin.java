@@ -45,7 +45,7 @@ public class JeiePlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        var infos = Utils.createEnchantmentInfos();
+        var infos = EnchantmentInfo.createAll();
         var enchantments = infos.parallelStream().map(EnchantmentInfo::enchantment).toList();
         registration.addRecipes(JeieCategories.DESCRIPTION, DescriptionRecipe.create(enchantments));
         registration.addRecipes(JeieCategories.INCOMPATIBILITY, IncompatibilityRecipe.create(infos));
