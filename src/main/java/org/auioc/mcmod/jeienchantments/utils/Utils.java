@@ -2,6 +2,8 @@ package org.auioc.mcmod.jeienchantments.utils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import org.auioc.mcmod.jeienchantments.JEIEnchantments;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,7 +21,9 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -59,6 +63,16 @@ public class Utils {
     public static List<ItemStack> createBooks(Enchantment enchantment) {
         return IntStream.range(1, enchantment.getMaxLevel() + 1)
             .mapToObj((lvl) -> EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, lvl)))
+            .toList();
+    }
+
+    public static List<ItemStack> createEnchantedItems(ItemLike item, Enchantment enchantment) {
+        return IntStream.range(1, enchantment.getMaxLevel() + 1)
+            .mapToObj((lvl) -> {
+                var itemStack = new ItemStack(item);
+                EnchantmentHelper.setEnchantments(Map.of(enchantment, lvl), itemStack);
+                return itemStack;
+            })
             .toList();
     }
 
@@ -112,6 +126,25 @@ public class Utils {
 
     public static MutableComponent rarityText(Enchantment enchantment) {
         return i10n("enchantment.rarity." + enchantment.getRarity().name().toLowerCase());
+    }
+
+    // ====================================================================== //
+
+    /**
+     * @see <a href="https://github.com/auioc/arnicalib-mcmod/blob/4dbac981f15a80b8ffdbe1392bf061270a43f7cd/src/main/java/org/auioc/mcmod/arnicalib/base/collection/ListUtils.java#L25-L33">ArnicaLib: ListUtils.java</a>
+     */
+    public static <T> int indexOf(List<T> list, Predicate<T> predicate, int ordinal) {
+        for (int i = 0, l = list.size(); i < l; ++i) {
+            if (predicate.test(list.get(i))) {
+                if (ordinal <= 0) return i;
+                ordinal--;
+            }
+        }
+        return -1;
+    }
+
+    public static int indexOfEnchantmentTooltip(Enchantment enchantment, List<Component> tooltips) {
+        return indexOf(tooltips, (l) -> (l instanceof TranslatableComponent c) ? (c.getKey().equals(enchantment.getDescriptionId()) ? true : false) : false, 0);
     }
 
     // ====================================================================== //
@@ -211,6 +244,17 @@ public class Utils {
             x += cols[col];
             GuiComponent.fill(poseStack, x, y0, x + 1, y0 + tableHeight + 1, color);
         }
+    }
+
+    // ====================================================================== //
+
+    public static void drawSlot(PoseStack poseStack, int x, int y, int width, int height) {
+        int x2 = x + width;
+        int y2 = y + height;
+        GuiComponent.fill(poseStack, x, y, x2, y2, 0xFF8B8B8B);
+        GuiComponent.fill(poseStack, x, y, x2 - 1, y2 - 1, 0xFF373737);
+        GuiComponent.fill(poseStack, x + 1, y + 1, x2, y2, 0xFFFFFFFF);
+        GuiComponent.fill(poseStack, x + 1, y + 1, x2 - 1, y2 - 1, 0xFF8B8B8B);
     }
 
 }
