@@ -30,7 +30,13 @@ public record EnchantmentInfo(Enchantment enchantment, List<AppliableItem> appli
     private static List<AppliableItem> filterItem(List<ItemStack> itemStacks, Enchantment enchantment) {
         return itemStacks
             .parallelStream()
-            .map((itemStack) -> new AppliableItem(itemStack.getItem(), enchantment.canEnchant(itemStack), enchantment.canApplyAtEnchantingTable(itemStack)))
+            .map(
+                (itemStack) -> new AppliableItem(
+                    itemStack.getItem(),
+                    enchantment.canEnchant(itemStack),
+                    !enchantment.isTreasureOnly() && enchantment.isDiscoverable() && (itemStack.getItemEnchantability() > 0) && enchantment.canApplyAtEnchantingTable(itemStack)
+                )
+            )
             .filter((appliableItem) -> appliableItem.canApply() || appliableItem.canApplyAtTable())
             .toList();
     }
