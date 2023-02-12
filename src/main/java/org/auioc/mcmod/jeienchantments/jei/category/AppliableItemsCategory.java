@@ -34,13 +34,13 @@ public class AppliableItemsCategory extends AbstractEnchantmentCategory<Appliabl
 
     @Override
     protected void setAdditionalRecipe(IRecipeLayoutBuilder builder, AppliableItemsRecipe recipe, IFocusGroup focuses) {
-        for (var item : recipe.items().entrySet()) {
-            builder.addSlot(RecipeIngredientRole.INPUT, item.getValue().x(), item.getValue().y())
-                .addItemStacks(Utils.createEnchantedItems(item.getKey().item(), recipe.enchantment()))
+        for (var slot : recipe.appliableItemSlots()) {
+            builder.addSlot(RecipeIngredientRole.INPUT, slot.x(), slot.y())
+                .addItemStacks(Utils.createEnchantedItems(slot.item(), recipe.enchantment()))
                 .addTooltipCallback((recipeSlotView, tooltips) -> {
                     tooltips.add(
                         Utils.indexOfEnchantmentTooltip(recipe.enchantment(), tooltips) + 1,
-                        Utils.tooltip("can_apply_at_enchanting_table").withStyle(ChatFormatting.GRAY).append(Utils.guiYesNo(item.getKey().canApplyAtTable()))
+                        Utils.tooltip("can_apply_at_enchanting_table").withStyle(ChatFormatting.GRAY).append(Utils.guiYesNo(slot.canApplyAtTable()))
                     );
                 });
         }

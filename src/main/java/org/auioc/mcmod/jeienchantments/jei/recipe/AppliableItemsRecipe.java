@@ -7,15 +7,12 @@ import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategor
 import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_X_OFFSET;
 import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_Y_OFFSET;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.auioc.mcmod.jeienchantments.api.IEnchantmentRecord;
 import org.auioc.mcmod.jeienchantments.api.IPaginatedRecord;
 import org.auioc.mcmod.jeienchantments.jei.category.DescriptionCategory;
 import org.auioc.mcmod.jeienchantments.utils.AppliableItem;
 import org.auioc.mcmod.jeienchantments.utils.EnchantmentInfo;
-import org.auioc.mcmod.jeienchantments.utils.IntPair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -23,7 +20,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public record AppliableItemsRecipe(Enchantment enchantment, Map<AppliableItem, IntPair> items, int page, int pageCount) implements IEnchantmentRecord, IPaginatedRecord {
+public record AppliableItemsRecipe(Enchantment enchantment, List<AppliableItem.Slot> appliableItemSlots, int page, int pageCount) implements IEnchantmentRecord, IPaginatedRecord {
 
     @SuppressWarnings("resource")
     public static List<AppliableItemsRecipe> create(List<EnchantmentInfo> infos) {
@@ -54,24 +51,27 @@ public record AppliableItemsRecipe(Enchantment enchantment, Map<AppliableItem, I
         return recipes;
     }
 
-    private static AppliableItemsRecipe createPage(Enchantment enchantment, List<AppliableItem> items, int y, int page, int pageCount) {
-        int itemCount = items.size();
+    private static AppliableItemsRecipe createPage(Enchantment enchantment, List<AppliableItem> appliableItems, int y, int page, int pageCount) {
+        int itemCount = appliableItems.size();
         int rowCount = (int) Math.ceil((float) itemCount / SLOTS_PRE_ROW);
 
-        var map = new HashMap<AppliableItem, IntPair>();
+        var appliableItemSlots = new ArrayList<AppliableItem.Slot>();
         for (int r = 0; r < rowCount; ++r) {
-            for (int c = 0; c < SLOTS_PRE_ROW; c++) {
-                int i = r * SLOTS_PRE_ROW + c;
+            for (int c = 0; c < SLOTS_PRE_ROW; ++c) {
+                int i = (r * SLOTS_PRE_ROW) + c;
                 if (i < itemCount) {
-                    map.put(
-                        items.get(i),
-                        new IntPair((c * SLOT_SIZE + SLOTS_X_OFFSET + SLOT_PADDING), (r * SLOT_SIZE + y + SLOTS_Y_OFFSET + SLOT_PADDING))
+                    appliableItemSlots.add(
+                        new AppliableItem.Slot(
+                            appliableItems.get(i),
+                            ((c * SLOT_SIZE) + SLOTS_X_OFFSET + SLOT_PADDING),
+                            ((r * SLOT_SIZE) + y + SLOTS_Y_OFFSET + SLOT_PADDING)
+                        )
                     );
                 }
             }
         }
 
-        return new AppliableItemsRecipe(enchantment, map, page, pageCount);
+        return new AppliableItemsRecipe(enchantment, appliableItemSlots, page, pageCount);
     }
 
 }
