@@ -2,10 +2,10 @@ package org.auioc.mcmod.jeienchantments.jei.recipe;
 
 import static org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory.SLOT_PADDING;
 import static org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory.SLOT_SIZE;
-import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_PRE_PAGE;
-import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_PRE_ROW;
-import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_X_OFFSET;
-import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_Y_OFFSET;
+import static org.auioc.mcmod.jeienchantments.jei.category.ApplicabilityCategory.SLOTS_PRE_PAGE;
+import static org.auioc.mcmod.jeienchantments.jei.category.ApplicabilityCategory.SLOTS_PRE_ROW;
+import static org.auioc.mcmod.jeienchantments.jei.category.ApplicabilityCategory.SLOTS_X_OFFSET;
+import static org.auioc.mcmod.jeienchantments.jei.category.ApplicabilityCategory.SLOTS_Y_OFFSET;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,19 +22,19 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public record AppliableItemsRecipe(Enchantment enchantment, List<AppliableItem.Slot> appliableItemSlots, int page, int pageCount) implements IEnchantmentRecord, IPaginatedRecord {
+public record ApplicabilityRecipe(Enchantment enchantment, List<AppliableItem.Slot> appliableItemSlots, int page, int pageCount) implements IEnchantmentRecord, IPaginatedRecord {
 
-    public static List<AppliableItemsRecipe> create(Map<Enchantment, EnchantmentApplicability> map) {
-        return map.entrySet().stream().map(AppliableItemsRecipe::create).flatMap(List::stream).toList();
+    public static List<ApplicabilityRecipe> create(Map<Enchantment, EnchantmentApplicability> map) {
+        return map.entrySet().stream().map(ApplicabilityRecipe::create).flatMap(List::stream).toList();
     }
 
     @SuppressWarnings("resource")
-    private static List<AppliableItemsRecipe> create(Entry<Enchantment, EnchantmentApplicability> entry) {
+    private static List<ApplicabilityRecipe> create(Entry<Enchantment, EnchantmentApplicability> entry) {
         final var font = Minecraft.getInstance().font;
         return create(entry.getKey(), entry.getValue(), font);
     }
 
-    private static List<AppliableItemsRecipe> create(Enchantment enchantment, EnchantmentApplicability record, Font font) {
+    private static List<ApplicabilityRecipe> create(Enchantment enchantment, EnchantmentApplicability record, Font font) {
         var items = record.appliableItems();
 
         int itemCount = items.size();
@@ -42,7 +42,7 @@ public record AppliableItemsRecipe(Enchantment enchantment, List<AppliableItem.S
 
         int y = DescriptionCategory.calcHeaderHeight(enchantment, font);
 
-        var recipes = new ArrayList<AppliableItemsRecipe>();
+        var recipes = new ArrayList<ApplicabilityRecipe>();
         for (int p = 0; p < pageCount; ++p) {
             recipes.add(
                 createPage(
@@ -56,7 +56,7 @@ public record AppliableItemsRecipe(Enchantment enchantment, List<AppliableItem.S
         return recipes;
     }
 
-    private static AppliableItemsRecipe createPage(Enchantment enchantment, List<AppliableItem> appliableItems, int y, int page, int pageCount) {
+    private static ApplicabilityRecipe createPage(Enchantment enchantment, List<AppliableItem> appliableItems, int y, int page, int pageCount) {
         int itemCount = appliableItems.size();
         int rowCount = (int) Math.ceil((float) itemCount / SLOTS_PRE_ROW);
 
@@ -76,7 +76,7 @@ public record AppliableItemsRecipe(Enchantment enchantment, List<AppliableItem.S
             }
         }
 
-        return new AppliableItemsRecipe(enchantment, appliableItemSlots, page, pageCount);
+        return new ApplicabilityRecipe(enchantment, appliableItemSlots, page, pageCount);
     }
 
 }

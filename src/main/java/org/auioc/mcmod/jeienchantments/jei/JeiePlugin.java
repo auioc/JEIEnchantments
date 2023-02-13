@@ -1,11 +1,11 @@
 package org.auioc.mcmod.jeienchantments.jei;
 
 import org.auioc.mcmod.jeienchantments.JEIEnchantments;
-import org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory;
+import org.auioc.mcmod.jeienchantments.jei.category.ApplicabilityCategory;
 import org.auioc.mcmod.jeienchantments.jei.category.AvailabilityCategory;
 import org.auioc.mcmod.jeienchantments.jei.category.DescriptionCategory;
 import org.auioc.mcmod.jeienchantments.jei.category.IncompatibilityCategory;
-import org.auioc.mcmod.jeienchantments.jei.recipe.AppliableItemsRecipe;
+import org.auioc.mcmod.jeienchantments.jei.recipe.ApplicabilityRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AvailabilityRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.DescriptionRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.IncompatibilityRecipe;
@@ -41,7 +41,7 @@ public class JeiePlugin implements IModPlugin {
         registration.addRecipeCategories(
             new DescriptionCategory(guiHelper),
             new IncompatibilityCategory(guiHelper),
-            new AppliableItemsCategory(guiHelper),
+            new ApplicabilityCategory(guiHelper),
             new AvailabilityCategory(guiHelper)
         );
     }
@@ -52,15 +52,15 @@ public class JeiePlugin implements IModPlugin {
         var dataset = JeieDataset.create();
         registration.addRecipes(JeieCategories.DESCRIPTION, DescriptionRecipe.create(dataset.enchantments()));
         registration.addRecipes(JeieCategories.INCOMPATIBILITY, IncompatibilityRecipe.create(dataset.enchantmentCompatibilityMap()));
-        registration.addRecipes(JeieCategories.APPLIABLE_ITEMS, AppliableItemsRecipe.create(dataset.enchantmentApplicabilityMap()));
+        registration.addRecipes(JeieCategories.APPLICABILITY, ApplicabilityRecipe.create(dataset.enchantmentApplicabilityMap()));
         registration.addRecipes(JeieCategories.AVILABILITY, AvailabilityRecipe.create(dataset.itemEnchantmentAvailabilityMap()));
         System.err.println((System.nanoTime() - t));
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(Items.ENCHANTING_TABLE), JeieCategories.DESCRIPTION, JeieCategories.INCOMPATIBILITY, JeieCategories.APPLIABLE_ITEMS);
-        registration.addRecipeCatalyst(new ItemStack(Items.ANVIL), JeieCategories.INCOMPATIBILITY, JeieCategories.APPLIABLE_ITEMS);
+        registration.addRecipeCatalyst(new ItemStack(Items.ENCHANTING_TABLE), JeieCategories.DESCRIPTION, JeieCategories.INCOMPATIBILITY, JeieCategories.APPLICABILITY);
+        registration.addRecipeCatalyst(new ItemStack(Items.ANVIL), JeieCategories.INCOMPATIBILITY, JeieCategories.APPLICABILITY);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class JeiePlugin implements IModPlugin {
             EnchantmentScreen.class,
             JeiUtils.createGuiClickableHandler(
                 25, 12, 16, 24, Utils.tooltip("show_enchantments"),
-                JeieCategories.DESCRIPTION, JeieCategories.INCOMPATIBILITY, JeieCategories.APPLIABLE_ITEMS
+                JeieCategories.DESCRIPTION, JeieCategories.INCOMPATIBILITY, JeieCategories.APPLICABILITY
             )
         );
     }

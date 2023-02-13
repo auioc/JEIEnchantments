@@ -140,7 +140,8 @@
 
     "gui.jeienchantments.category.description": "Enchantment Description",
     "gui.jeienchantments.category.incompatibility": "Incompatible Enchantments",
-    "gui.jeienchantments.category.appliable_items": "Enchantment Appliable Items",
+    "gui.jeienchantments.category.applicability": "Enchantment Appliable Items",
+    "gui.jeienchantments.category.availability": "Available Enchantment",
 
     "gui.jeienchantments.text.missing_description": "No description found.",
     "gui.jeienchantments.text.list_marker": "• ",

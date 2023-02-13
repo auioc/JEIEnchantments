@@ -2,7 +2,7 @@ package org.auioc.mcmod.jeienchantments.jei.category;
 
 import org.auioc.mcmod.jeienchantments.api.category.AbstractEnchantmentCategory;
 import org.auioc.mcmod.jeienchantments.jei.JeieCategories;
-import org.auioc.mcmod.jeienchantments.jei.recipe.AppliableItemsRecipe;
+import org.auioc.mcmod.jeienchantments.jei.recipe.ApplicabilityRecipe;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class AppliableItemsCategory extends AbstractEnchantmentCategory<AppliableItemsRecipe> {
+public class ApplicabilityCategory extends AbstractEnchantmentCategory<ApplicabilityRecipe> {
 
     public static final int SLOTS_X_OFFSET = 8;
     public static final int SLOTS_Y_OFFSET = 4;
@@ -23,17 +23,17 @@ public class AppliableItemsCategory extends AbstractEnchantmentCategory<Appliabl
     public static final int SLOTS_PRE_COL = 4;
     public static final int SLOTS_PRE_PAGE = SLOTS_PRE_ROW * SLOTS_PRE_COL;
 
-    public AppliableItemsCategory(IGuiHelper guiHelper) {
-        super(JeieCategories.APPLIABLE_ITEMS, guiHelper);
+    public ApplicabilityCategory(IGuiHelper guiHelper) {
+        super(JeieCategories.APPLICABILITY, guiHelper);
     }
 
     @Override
-    protected void drawContent(AppliableItemsRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY, int textY, int textWidth) {
+    protected void drawContent(ApplicabilityRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY, int textY, int textWidth) {
         Utils.drawSlot(poseStack, SLOTS_X_OFFSET, textY + SLOTS_Y_OFFSET, SLOT_SIZE * SLOTS_PRE_ROW, SLOT_SIZE * SLOTS_PRE_COL);
     }
 
     @Override
-    protected void setAdditionalRecipe(IRecipeLayoutBuilder builder, AppliableItemsRecipe recipe, IFocusGroup focuses) {
+    protected void setAdditionalRecipe(IRecipeLayoutBuilder builder, ApplicabilityRecipe recipe, IFocusGroup focuses) {
         for (var slot : recipe.appliableItemSlots()) {
             builder.addSlot(RecipeIngredientRole.INPUT, slot.x(), slot.y())
                 .addItemStacks(Utils.createEnchantedItems(slot.item(), recipe.enchantment()))

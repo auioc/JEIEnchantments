@@ -9,7 +9,8 @@
 
     "gui.jeienchantments.category.description": "附魔描述",
     "gui.jeienchantments.category.incompatibility": "附魔冲突",
-    "gui.jeienchantments.category.appliable_items": "附魔可用物品",
+    "gui.jeienchantments.category.applicability": "附魔可用物品",
+    "gui.jeienchantments.category.availability": "可用附魔",
 
     "gui.jeienchantments.text.missing_description": "没有可用描述。",
     "gui.jeienchantments.text.list_marker": "• ",
