@@ -22,7 +22,7 @@ public record DescriptionRecipe(Enchantment enchantment, List<FormattedText> des
         return enchantments.stream().map((enchantment) -> create(enchantment, font)).flatMap(List::stream).toList();
     }
 
-    public static List<DescriptionRecipe> create(Enchantment enchantment, Font font) {
+    private static List<DescriptionRecipe> create(Enchantment enchantment, Font font) {
         final var lines = new ArrayList<FormattedText>();
         final int width = DescriptionCategory.WIDTH - 4;
 

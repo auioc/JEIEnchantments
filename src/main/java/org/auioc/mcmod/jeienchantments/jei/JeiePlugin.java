@@ -7,7 +7,7 @@ import org.auioc.mcmod.jeienchantments.jei.category.IncompatibilityCategory;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AppliableItemsRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.DescriptionRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.IncompatibilityRecipe;
-import org.auioc.mcmod.jeienchantments.record.EnchantmentInfo;
+import org.auioc.mcmod.jeienchantments.record.JeieDataset;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -45,11 +45,12 @@ public class JeiePlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        var infos = EnchantmentInfo.createAll();
-        var enchantments = infos.parallelStream().map(EnchantmentInfo::enchantment).toList();
-        registration.addRecipes(JeieCategories.DESCRIPTION, DescriptionRecipe.create(enchantments));
-        registration.addRecipes(JeieCategories.INCOMPATIBILITY, IncompatibilityRecipe.create(infos));
-        registration.addRecipes(JeieCategories.APPLIABLE_ITEMS, AppliableItemsRecipe.create(infos));
+        long t = System.nanoTime();
+        var dataset = JeieDataset.create();
+        registration.addRecipes(JeieCategories.DESCRIPTION, DescriptionRecipe.create(dataset.enchantments()));
+        registration.addRecipes(JeieCategories.INCOMPATIBILITY, IncompatibilityRecipe.create(dataset.enchantmentCompatibilityMap()));
+        registration.addRecipes(JeieCategories.APPLIABLE_ITEMS, AppliableItemsRecipe.create(dataset.enchantmentApplicabilityMap()));
+        System.err.println((System.nanoTime() - t));
     }
 
     @Override

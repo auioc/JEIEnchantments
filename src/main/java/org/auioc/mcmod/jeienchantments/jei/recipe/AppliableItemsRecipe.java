@@ -8,11 +8,13 @@ import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategor
 import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_Y_OFFSET;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.auioc.mcmod.jeienchantments.api.record.IEnchantmentRecord;
 import org.auioc.mcmod.jeienchantments.api.record.IPaginatedRecord;
 import org.auioc.mcmod.jeienchantments.jei.category.DescriptionCategory;
 import org.auioc.mcmod.jeienchantments.record.AppliableItem;
-import org.auioc.mcmod.jeienchantments.record.EnchantmentInfo;
+import org.auioc.mcmod.jeienchantments.record.EnchantmentApplicability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -22,15 +24,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public record AppliableItemsRecipe(Enchantment enchantment, List<AppliableItem.Slot> appliableItemSlots, int page, int pageCount) implements IEnchantmentRecord, IPaginatedRecord {
 
-    @SuppressWarnings("resource")
-    public static List<AppliableItemsRecipe> create(List<EnchantmentInfo> infos) {
-        final var font = Minecraft.getInstance().font;
-        return infos.stream().map((info) -> create(info, font)).flatMap(List::stream).toList();
+    public static List<AppliableItemsRecipe> create(Map<Enchantment, EnchantmentApplicability> map) {
+        return map.entrySet().stream().map(AppliableItemsRecipe::create).flatMap(List::stream).toList();
     }
 
-    public static List<AppliableItemsRecipe> create(EnchantmentInfo info, Font font) {
-        final var enchantment = info.enchantment();
-        var items = info.appliableItems();
+    @SuppressWarnings("resource")
+    private static List<AppliableItemsRecipe> create(Entry<Enchantment, EnchantmentApplicability> entry) {
+        final var font = Minecraft.getInstance().font;
+        return create(entry.getKey(), entry.getValue(), font);
+    }
+
+    private static List<AppliableItemsRecipe> create(Enchantment enchantment, EnchantmentApplicability record, Font font) {
+        var items = record.appliableItems();
 
         int itemCount = items.size();
         int pageCount = (int) Math.ceil((float) itemCount / SLOTS_PRE_PAGE);
