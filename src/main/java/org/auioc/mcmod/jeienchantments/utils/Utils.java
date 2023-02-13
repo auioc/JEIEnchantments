@@ -1,5 +1,7 @@
 package org.auioc.mcmod.jeienchantments.utils;
 
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -25,9 +27,32 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
 @OnlyIn(Dist.CLIENT)
 public class Utils {
+
+    public static <K extends ForgeRegistryEntry<?>> Comparator<K> registryEntryComparator() {
+        return new Comparator<K>() {
+            @Override
+            public int compare(K o1, K o2) { return o1.getRegistryName().compareTo(o2.getRegistryName()); }
+        };
+    }
+
+    public static <K extends ForgeRegistryEntry<?>, V> Comparator<Map.Entry<K, V>> registryEntryMapComparator() {
+        return Map.Entry.comparingByKey(registryEntryComparator());
+    }
+
+    public static <K extends ForgeRegistryEntry<?>, V> LinkedHashMap<K, V> sortRegistryEntryMap(Map<K, V> _map) {
+        var linkedMap = new LinkedHashMap<K, V>(_map.size(), 1.0F);
+        _map.entrySet()
+            .stream()
+            .sorted(registryEntryMapComparator())
+            .forEach((e) -> linkedMap.put(e.getKey(), e.getValue()));
+        return linkedMap;
+    }
+
+    // ====================================================================== //
 
     public static List<ItemStack> createBooks(Enchantment enchantment) {
         return IntStream.range(1, enchantment.getMaxLevel() + 1)
