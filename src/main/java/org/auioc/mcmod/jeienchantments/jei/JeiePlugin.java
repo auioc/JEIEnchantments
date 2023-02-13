@@ -2,9 +2,11 @@ package org.auioc.mcmod.jeienchantments.jei;
 
 import org.auioc.mcmod.jeienchantments.JEIEnchantments;
 import org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory;
+import org.auioc.mcmod.jeienchantments.jei.category.AvailabilityCategory;
 import org.auioc.mcmod.jeienchantments.jei.category.DescriptionCategory;
 import org.auioc.mcmod.jeienchantments.jei.category.IncompatibilityCategory;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AppliableItemsRecipe;
+import org.auioc.mcmod.jeienchantments.jei.recipe.AvailabilityRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.DescriptionRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.IncompatibilityRecipe;
 import org.auioc.mcmod.jeienchantments.record.JeieDataset;
@@ -39,7 +41,8 @@ public class JeiePlugin implements IModPlugin {
         registration.addRecipeCategories(
             new DescriptionCategory(guiHelper),
             new IncompatibilityCategory(guiHelper),
-            new AppliableItemsCategory(guiHelper)
+            new AppliableItemsCategory(guiHelper),
+            new AvailabilityCategory(guiHelper)
         );
     }
 
@@ -50,6 +53,7 @@ public class JeiePlugin implements IModPlugin {
         registration.addRecipes(JeieCategories.DESCRIPTION, DescriptionRecipe.create(dataset.enchantments()));
         registration.addRecipes(JeieCategories.INCOMPATIBILITY, IncompatibilityRecipe.create(dataset.enchantmentCompatibilityMap()));
         registration.addRecipes(JeieCategories.APPLIABLE_ITEMS, AppliableItemsRecipe.create(dataset.enchantmentApplicabilityMap()));
+        registration.addRecipes(JeieCategories.AVILABILITY, AvailabilityRecipe.create(dataset.itemEnchantmentAvailabilityMap()));
         System.err.println((System.nanoTime() - t));
     }
 

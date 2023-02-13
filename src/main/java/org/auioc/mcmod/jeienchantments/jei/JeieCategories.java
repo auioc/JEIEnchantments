@@ -2,6 +2,7 @@ package org.auioc.mcmod.jeienchantments.jei;
 
 import org.auioc.mcmod.jeienchantments.JEIEnchantments;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AppliableItemsRecipe;
+import org.auioc.mcmod.jeienchantments.jei.recipe.AvailabilityRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.DescriptionRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.IncompatibilityRecipe;
 import mezz.jei.api.recipe.RecipeType;
@@ -14,6 +15,7 @@ public final class JeieCategories {
     public static final RecipeType<DescriptionRecipe> DESCRIPTION = create("description", DescriptionRecipe.class);
     public static final RecipeType<IncompatibilityRecipe> INCOMPATIBILITY = create("incompatibility", IncompatibilityRecipe.class);
     public static final RecipeType<AppliableItemsRecipe> APPLIABLE_ITEMS = create("appliable_items", AppliableItemsRecipe.class);
+    public static final RecipeType<AvailabilityRecipe> AVILABILITY = create("availability", AvailabilityRecipe.class);
 
     // ====================================================================== //
 

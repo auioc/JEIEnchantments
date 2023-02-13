@@ -26,7 +26,6 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
     public static final int WIDTH = AbstractRecipeCategory.DEFAULT_WIDTH;
     public static final int HEIGHT = AbstractRecipeCategory.DEFAULT_HEIGHT;
     public static final int TEXT_WIDTH = WIDTH - OFFSET_4;
-    public static final int TEXT_ROW_SPACING = 1;
     public static final int HEADER_TEXT_WIDTH = WIDTH - SLOT_SIZE - (OFFSET_4 * 2);
     public static final int FOOTER_HEIGHT = OFFSET_4 * 3;
     public static final int COLOR_GARY = 0xFFA1A1A1;
