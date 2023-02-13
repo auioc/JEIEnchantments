@@ -7,7 +7,7 @@ import org.auioc.mcmod.jeienchantments.jei.category.IncompatibilityCategory;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AppliableItemsRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.DescriptionRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.IncompatibilityRecipe;
-import org.auioc.mcmod.jeienchantments.utils.EnchantmentInfo;
+import org.auioc.mcmod.jeienchantments.record.EnchantmentInfo;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;

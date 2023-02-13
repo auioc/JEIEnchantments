@@ -8,11 +8,11 @@ import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategor
 import static org.auioc.mcmod.jeienchantments.jei.category.AppliableItemsCategory.SLOTS_Y_OFFSET;
 import java.util.ArrayList;
 import java.util.List;
-import org.auioc.mcmod.jeienchantments.api.IEnchantmentRecord;
-import org.auioc.mcmod.jeienchantments.api.IPaginatedRecord;
+import org.auioc.mcmod.jeienchantments.api.record.IEnchantmentRecord;
+import org.auioc.mcmod.jeienchantments.api.record.IPaginatedRecord;
 import org.auioc.mcmod.jeienchantments.jei.category.DescriptionCategory;
-import org.auioc.mcmod.jeienchantments.utils.AppliableItem;
-import org.auioc.mcmod.jeienchantments.utils.EnchantmentInfo;
+import org.auioc.mcmod.jeienchantments.record.AppliableItem;
+import org.auioc.mcmod.jeienchantments.record.EnchantmentInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.world.item.enchantment.Enchantment;

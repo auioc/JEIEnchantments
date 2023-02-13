@@ -1,8 +1,8 @@
-package org.auioc.mcmod.jeienchantments.utils;
+package org.auioc.mcmod.jeienchantments.record;
 
 import java.util.Collection;
 import java.util.List;
-import org.auioc.mcmod.jeienchantments.api.IEnchantmentRecord;
+import org.auioc.mcmod.jeienchantments.api.record.IEnchantmentRecord;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.api.distmarker.Dist;

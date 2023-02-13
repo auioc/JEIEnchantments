@@ -1,4 +1,4 @@
-package org.auioc.mcmod.jeienchantments.utils;
+package org.auioc.mcmod.jeienchantments.record;
 
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;

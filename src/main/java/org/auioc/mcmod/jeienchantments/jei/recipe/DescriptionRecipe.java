@@ -2,8 +2,8 @@ package org.auioc.mcmod.jeienchantments.jei.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.auioc.mcmod.jeienchantments.api.IEnchantmentRecord;
-import org.auioc.mcmod.jeienchantments.api.IPaginatedRecord;
+import org.auioc.mcmod.jeienchantments.api.record.IEnchantmentRecord;
+import org.auioc.mcmod.jeienchantments.api.record.IPaginatedRecord;
 import org.auioc.mcmod.jeienchantments.jei.category.DescriptionCategory;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import net.minecraft.client.Minecraft;

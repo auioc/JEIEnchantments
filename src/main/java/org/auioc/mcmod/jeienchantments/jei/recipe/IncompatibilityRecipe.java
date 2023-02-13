@@ -1,7 +1,7 @@
 package org.auioc.mcmod.jeienchantments.jei.recipe;
 
 import java.util.List;
-import org.auioc.mcmod.jeienchantments.utils.EnchantmentInfo;
+import org.auioc.mcmod.jeienchantments.record.EnchantmentInfo;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

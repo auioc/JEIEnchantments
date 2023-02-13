@@ -1,7 +1,7 @@
 package org.auioc.mcmod.jeienchantments.api.category;
 
-import org.auioc.mcmod.jeienchantments.api.IEnchantmentRecord;
-import org.auioc.mcmod.jeienchantments.api.IPaginatedRecord;
+import org.auioc.mcmod.jeienchantments.api.record.IEnchantmentRecord;
+import org.auioc.mcmod.jeienchantments.api.record.IPaginatedRecord;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
