@@ -1,5 +1,6 @@
 package org.auioc.mcmod.jeienchantments.jei.category;
 
+import org.auioc.mcmod.jeienchantments.api.category.AbstractPagedCategory;
 import org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory;
 import org.auioc.mcmod.jeienchantments.jei.JeieCategories;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AvailabilityRecipe;
@@ -15,24 +16,31 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class AvailabilityCategory extends AbstractRecipeCategory<AvailabilityRecipe> {
+public class AvailabilityCategory extends AbstractPagedCategory<AvailabilityRecipe> {
 
     public static final int WIDTH = AbstractRecipeCategory.DEFAULT_WIDTH;
     public static final int HEIGHT = AbstractRecipeCategory.DEFAULT_HEIGHT;
+    public static final int SLOT_X = OFFSET_4;
+    public static final int SLOT_Y = OFFSET_4;
+    public static final int CONTENT_WIDTH = WIDTH - SLOT_SIZE - OFFSET_4 * 2;
+    public static final int CONTENT_HEIGHT = HEIGHT - FOOTER_HEIGHT;
+    public static final int CONTENT_X = SLOT_X + SLOT_SIZE + OFFSET_4;
+    public static final int CONTENT_Y = SLOT_Y;
 
     public AvailabilityCategory(IGuiHelper guiHelper) {
-        super(JeieCategories.AVILABILITY, guiHelper);
+        super(JeieCategories.AVILABILITY, guiHelper, WIDTH, HEIGHT);
     }
 
     @Override
     public void draw(AvailabilityRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
-        slot.draw(poseStack, OFFSET_4, OFFSET_4);
-        Utils.drawMultilineText(poseStack, font, recipe.enchantmentNames(), OFFSET_4 + SLOT_SIZE + OFFSET_4, OFFSET_4, font.lineHeight + 1, 0);
+        slot.draw(poseStack, SLOT_X, SLOT_Y);
+        Utils.drawMultilineText(poseStack, font, recipe.enchantmentNames(), CONTENT_X, CONTENT_Y, font.lineHeight + TEXT_ROW_SPACING, 0);
+        drawFooter(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AvailabilityRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, OFFSET_4 + SLOT_PADDING, OFFSET_4 + SLOT_PADDING).addItemStack(new ItemStack(recipe.item()));
+        builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addItemStack(new ItemStack(recipe.item()));
     }
 
 }

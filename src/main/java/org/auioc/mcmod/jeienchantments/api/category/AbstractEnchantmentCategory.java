@@ -21,14 +21,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord & IPaginatedRecord> extends AbstractRecipeCategory<T> {
+public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord & IPaginatedRecord> extends AbstractPagedCategory<T> {
 
     public static final int WIDTH = AbstractRecipeCategory.DEFAULT_WIDTH;
     public static final int HEIGHT = AbstractRecipeCategory.DEFAULT_HEIGHT;
+    public static final int SLOT_X = OFFSET_4;
+    public static final int SLOT_Y = OFFSET_4;
     public static final int TEXT_WIDTH = WIDTH - OFFSET_4;
     public static final int HEADER_TEXT_WIDTH = WIDTH - SLOT_SIZE - (OFFSET_4 * 2);
-    public static final int FOOTER_HEIGHT = OFFSET_4 * 3;
-    public static final int COLOR_GARY = 0xFFA1A1A1;
+    public static final int HEADER_TEXT_X = SLOT_X + SLOT_SIZE + OFFSET_4;
+    public static final int HEADER_TEXT_Y = SLOT_Y;
 
     protected final IDrawable icon;
 
@@ -49,38 +51,30 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     @Override
     public final void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, OFFSET_4 + SLOT_PADDING, OFFSET_4 + SLOT_PADDING).addItemStacks(Utils.createBooks(recipe.enchantment()));
+        builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addItemStacks(Utils.createBooks(recipe.enchantment()));
         setAdditionalRecipe(builder, recipe, focuses);
     }
 
     // ====================================================================== //
 
     private int drawHeader(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
-        slot.draw(poseStack, OFFSET_4, OFFSET_4);
+        slot.draw(poseStack, SLOT_X, SLOT_Y);
 
         final var enchantment = recipe.enchantment();
 
         var name = Utils.nameWithLevels(enchantment);
         var id = Utils.idText(enchantment).withStyle(ChatFormatting.DARK_GRAY);
 
-        int y = OFFSET_4;
+        int y = HEADER_TEXT_Y;
 
-        y = Utils.drawTextWarp(poseStack, font, name, OFFSET_4 + SLOT_SIZE + OFFSET_4, y, HEADER_TEXT_WIDTH, 0);
-        y = Utils.drawTextWarp(poseStack, font, id, OFFSET_4 + SLOT_SIZE + OFFSET_4, y, HEADER_TEXT_WIDTH, 0);
+        y = Utils.drawTextWarp(poseStack, font, name, HEADER_TEXT_X, y, HEADER_TEXT_WIDTH, 0);
+        y = Utils.drawTextWarp(poseStack, font, id, HEADER_TEXT_X, y, HEADER_TEXT_WIDTH, 0);
 
         y += OFFSET_4;
         GuiComponent.fill(poseStack, OFFSET_4, y - OFFSET_1, TEXT_WIDTH, y, COLOR_GARY);
         y += OFFSET_4;
 
         return y;
-    }
-
-    private void drawFooter(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
-        if (recipe.pageCount() > 1) {
-            int y = height - OFFSET_4 * 2;
-            Utils.drawCenteredText(poseStack, font, String.format("%d/%d", recipe.page(), recipe.pageCount()), TEXT_WIDTH / 2, y, 0xFFA1A1A1);
-            GuiComponent.fill(poseStack, OFFSET_4, (y - OFFSET_2 - OFFSET_1), TEXT_WIDTH, (y - OFFSET_2), COLOR_GARY);
-        }
     }
 
     // ====================================================================== //

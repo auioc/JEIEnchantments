@@ -36,6 +36,8 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
     public static final int OFFSET_1 = 1;
     public static final int OFFSET_2 = 2;
     public static final int OFFSET_4 = 4;
+    public static final int COLOR_GARY = 0xFFA1A1A1;
+
 
     protected AbstractRecipeCategory(RecipeType<T> type, IGuiHelper guiHelper, int width, int height) {
         this.type = type;

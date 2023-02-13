@@ -31,15 +31,14 @@ public record AvailabilityRecipe(Item item, List<FormattedText> enchantmentNames
 
     private static List<AvailabilityRecipe> create(Item item, ItemEnchantmentAvailability record, Font font) {
         final var lines = new ArrayList<FormattedText>();
-        final int width = AvailabilityCategory.WIDTH - 4;
 
         for (var text : createContent(record)) {
             if (text == null) lines.add(Utils.text(""));
-            else lines.addAll(Utils.splitText(text, font, width));
+            else lines.addAll(Utils.splitText(text, font, AvailabilityCategory.CONTENT_WIDTH));
         }
 
         var lineCount = lines.size();
-        int maxLines = AvailabilityCategory.HEIGHT / (font.lineHeight + AvailabilityCategory.TEXT_ROW_SPACING);
+        int maxLines = AvailabilityCategory.CONTENT_HEIGHT / (font.lineHeight + AvailabilityCategory.TEXT_ROW_SPACING);
         int pageCount = (int) Math.ceil((float) lines.size() / maxLines);
 
         var recipes = new ArrayList<AvailabilityRecipe>();
