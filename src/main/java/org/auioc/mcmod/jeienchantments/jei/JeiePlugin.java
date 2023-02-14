@@ -13,10 +13,12 @@ import org.auioc.mcmod.jeienchantments.record.JeieDataset;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +31,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class JeiePlugin implements IModPlugin {
 
     private static final ResourceLocation UID = JEIEnchantments.id(JEIEnchantments.MOD_ID);
+
+    private static IJeiRuntime jeiRuntime;
+    private static IJeiHelpers jeiHelpers;
 
     public static void init() {}
 
@@ -48,13 +53,13 @@ public class JeiePlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        long t = System.nanoTime();
+        JeiePlugin.jeiHelpers = registration.getJeiHelpers();
+
         var dataset = JeieDataset.create();
         registration.addRecipes(JeieCategories.DESCRIPTION, DescriptionRecipe.create(dataset.enchantments()));
         registration.addRecipes(JeieCategories.INCOMPATIBILITY, IncompatibilityRecipe.create(dataset.enchantmentCompatibilityMap()));
         registration.addRecipes(JeieCategories.APPLICABILITY, ApplicabilityRecipe.create(dataset.enchantmentApplicabilityMap()));
         registration.addRecipes(JeieCategories.AVILABILITY, AvailabilityRecipe.create(dataset.itemEnchantmentAvailabilityMap()));
-        System.err.println((System.nanoTime() - t));
     }
 
     @Override
@@ -73,5 +78,16 @@ public class JeiePlugin implements IModPlugin {
             )
         );
     }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        JeiePlugin.jeiRuntime = jeiRuntime;
+    }
+
+    // ====================================================================== //
+
+    public static IJeiRuntime getJeiRuntime() { return jeiRuntime; }
+
+    public static IJeiHelpers getJeiHelpers() { return jeiHelpers; }
 
 }
