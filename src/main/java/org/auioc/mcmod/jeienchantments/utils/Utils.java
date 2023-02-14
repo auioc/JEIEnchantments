@@ -98,11 +98,17 @@ public class Utils {
         return i10n(enchantment.getDescriptionId()).withStyle((style) -> colorName(style, enchantment));
     }
 
-    public static MutableComponent nameWithLevels(Enchantment enchantment) {
+    public static MutableComponent nameWithLevels(Enchantment enchantment, boolean boldName) {
         var lvlText = Utils.text(" (").append(Utils.lvlText(1));
         if (enchantment.getMaxLevel() > 1) lvlText.append(Utils.text("-").append(Utils.lvlText(enchantment.getMaxLevel())));
         lvlText.append(")");
-        return text("").append(i10n(enchantment.getDescriptionId()).withStyle(ChatFormatting.BOLD)).append(lvlText).withStyle((style) -> colorName(style, enchantment));
+        var name = i10n(enchantment.getDescriptionId());
+        if (boldName) name.withStyle(ChatFormatting.BOLD);
+        return text("").append(name).append(lvlText).withStyle((style) -> colorName(style, enchantment));
+    }
+
+    public static MutableComponent nameWithLevels(Enchantment enchantment) {
+        return nameWithLevels(enchantment, true);
     }
 
     public static MutableComponent idText(Enchantment enchantment) {
