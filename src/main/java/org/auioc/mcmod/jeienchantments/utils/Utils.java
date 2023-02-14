@@ -54,10 +54,16 @@ public class Utils {
 
     // ====================================================================== //
 
+    public static ItemStack createBook(Enchantment enchantment, int lvl) {
+        return EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, lvl));
+    }
+
+    public static ItemStack createBook(Enchantment enchantment) {
+        return createBook(enchantment, 1);
+    }
+
     public static List<ItemStack> createBooks(Enchantment enchantment) {
-        return IntStream.range(1, enchantment.getMaxLevel() + 1)
-            .mapToObj((lvl) -> EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, lvl)))
-            .toList();
+        return IntStream.range(1, enchantment.getMaxLevel() + 1).mapToObj((lvl) -> createBook(enchantment, lvl)).toList();
     }
 
     public static List<ItemStack> createEnchantedItems(ItemLike item, Enchantment enchantment) {
@@ -91,7 +97,7 @@ public class Utils {
     // ====================================================================== //
 
     public static Style colorName(Style style, Enchantment enchantment) {
-        return (enchantment.isCurse()) ? style.applyFormat(ChatFormatting.DARK_RED) : style;
+        return (enchantment.isCurse()) ? style.applyFormat(ChatFormatting.RED) : style;
     }
 
     public static MutableComponent name(Enchantment enchantment) {
