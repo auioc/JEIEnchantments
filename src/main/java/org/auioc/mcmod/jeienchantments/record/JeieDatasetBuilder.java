@@ -34,8 +34,8 @@ public class JeieDatasetBuilder {
     private Object2ListMapWarpper<Item, AvailableEnchantment> _tempMap2 = Object2ListMapWarpper.create();
 
     protected JeieDatasetBuilder() {
-        this.allItemStacks = ForgeRegistries.ITEMS.getValues().stream().map(ItemStack::new).toList();
-        this.allEnchantments = ForgeRegistries.ENCHANTMENTS.getValues();
+        this.allItemStacks = ForgeRegistries.ITEMS.getValues().stream().sorted(Utils.registryEntryComparator()).map(ItemStack::new).toList();
+        this.allEnchantments = ForgeRegistries.ENCHANTMENTS.getValues().stream().sorted(Utils.registryEntryComparator()).toList();
     }
 
     protected JeieDataset build() {

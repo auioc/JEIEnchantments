@@ -2,6 +2,7 @@ package org.auioc.mcmod.jeienchantments.api.category;
 
 import org.auioc.mcmod.jeienchantments.api.record.IEnchantmentRecord;
 import org.auioc.mcmod.jeienchantments.api.record.IPaginatedRecord;
+import org.auioc.mcmod.jeienchantments.jei.JeieIngredientTypes;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -51,6 +52,7 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     @Override
     public final void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses) {
+        builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.enchantment());
         builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addItemStacks(Utils.createBooks(recipe.enchantment()));
         setAdditionalRecipe(builder, recipe, focuses);
     }

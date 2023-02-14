@@ -2,11 +2,10 @@ package org.auioc.mcmod.jeienchantments.jei.gui;
 
 import java.util.List;
 import org.auioc.mcmod.jeienchantments.gui.SimpleTextButton;
+import org.auioc.mcmod.jeienchantments.jei.JeieIngredientTypes;
 import org.auioc.mcmod.jeienchantments.jei.JeiePlugin;
 import org.auioc.mcmod.jeienchantments.record.AvailableEnchantment;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -25,12 +24,12 @@ public class AvailableEnchantmentTextButton extends SimpleTextButton {
 
     @Override
     public void onClick(double mouseX, double mouseY) {
-        var factory = JeiePlugin.getJeiHelpers().getFocusFactory();
         JeiePlugin.getJeiRuntime().getRecipesGui().show(
-            Utils.createBooks(availableEnchantment.enchantment())
-                .stream()
-                .<IFocus<?>>map((book) -> factory.createFocus(RecipeIngredientRole.INPUT, VanillaTypes.ITEM_STACK, book))
-                .toList()
+            JeiePlugin.getJeiHelpers().getFocusFactory().createFocus(
+                RecipeIngredientRole.INPUT,
+                JeieIngredientTypes.ENCHANTMENT,
+                availableEnchantment.enchantment()
+            )
         );
     }
 
