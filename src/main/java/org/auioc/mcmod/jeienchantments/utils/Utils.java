@@ -219,6 +219,10 @@ public class Utils {
         font.draw(poseStack, text, (float) (x - font.width(text) / 2), (float) y, color);
     }
 
+    public static void drawCenteredText(PoseStack poseStack, Font font, Component text, int x, int y, int color) {
+        font.draw(poseStack, text, (float) (x - font.width(text) / 2), (float) y, color);
+    }
+
     // ====================================================================== //
 
     public static void drawTable(PoseStack poseStack, int x0, int y0, int[] cols, int[] rows, int color) {
