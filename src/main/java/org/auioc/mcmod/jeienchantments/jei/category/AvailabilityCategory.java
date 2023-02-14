@@ -4,7 +4,8 @@ import org.auioc.mcmod.jeienchantments.api.category.AbstractPagedCategory;
 import org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory;
 import org.auioc.mcmod.jeienchantments.jei.JeieCategories;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AvailabilityRecipe;
-import org.auioc.mcmod.jeienchantments.utils.Utils;
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -34,13 +35,27 @@ public class AvailabilityCategory extends AbstractPagedCategory<AvailabilityReci
     @Override
     public void draw(AvailabilityRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
         slot.draw(poseStack, SLOT_X, SLOT_Y);
-        Utils.drawMultilineText(poseStack, font, recipe.enchantmentNames(), CONTENT_X, CONTENT_Y, font.lineHeight + TEXT_ROW_SPACING, 0);
         drawFooter(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+        for (var b : recipe.enchantmentNames()) {
+            b.render(poseStack, mouseX, mouseY);
+        }
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AvailabilityRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addItemStack(new ItemStack(recipe.item()));
+    }
+
+    @Override
+    public boolean handleInput(AvailabilityRecipe recipe, double mouseX, double mouseY, Key input) {
+        if (input.getType() == InputConstants.Type.MOUSE) {
+            for (var b : recipe.enchantmentNames()) {
+                if (b.mouseClicked(mouseX, mouseY, input.getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

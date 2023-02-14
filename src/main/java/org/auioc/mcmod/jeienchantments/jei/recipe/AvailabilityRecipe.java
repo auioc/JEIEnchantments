@@ -7,17 +7,16 @@ import java.util.Map.Entry;
 import org.auioc.mcmod.jeienchantments.api.record.IItemRecord;
 import org.auioc.mcmod.jeienchantments.api.record.IPaginatedRecord;
 import org.auioc.mcmod.jeienchantments.jei.category.AvailabilityCategory;
+import org.auioc.mcmod.jeienchantments.jei.gui.AvailableEnchantmentTextButton;
 import org.auioc.mcmod.jeienchantments.record.ItemEnchantmentAvailability;
-import org.auioc.mcmod.jeienchantments.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public record AvailabilityRecipe(Item item, List<FormattedText> enchantmentNames, int page, int pageCount) implements IItemRecord, IPaginatedRecord {
+public record AvailabilityRecipe(Item item, List<AvailableEnchantmentTextButton> enchantmentNames, int page, int pageCount) implements IItemRecord, IPaginatedRecord {
 
     public static List<AvailabilityRecipe> create(Map<Item, ItemEnchantmentAvailability> map) {
         return map.entrySet().stream().map(AvailabilityRecipe::create).flatMap(List::stream).toList();
@@ -30,15 +29,21 @@ public record AvailabilityRecipe(Item item, List<FormattedText> enchantmentNames
     }
 
     private static List<AvailabilityRecipe> create(Item item, ItemEnchantmentAvailability record, Font font) {
-        final var lines = new ArrayList<FormattedText>();
+        final var lines = new ArrayList<AvailableEnchantmentTextButton>();
 
-        for (var text : createContent(record)) {
-            if (text == null) lines.add(Utils.text(""));
-            else lines.addAll(Utils.splitText(text, font, AvailabilityCategory.CONTENT_WIDTH));
+        int maxLines = AvailabilityCategory.CONTENT_HEIGHT / (font.lineHeight + AvailabilityCategory.TEXT_ROW_SPACING);
+
+        var enchantments = record.availableEnchantments();
+
+        int i = 0;
+        for (var availableEnchantment : enchantments) {
+            int y = AvailabilityCategory.CONTENT_Y + i * (font.lineHeight + AvailabilityCategory.TEXT_ROW_SPACING);
+            lines.add(new AvailableEnchantmentTextButton(AvailabilityCategory.CONTENT_X, y, availableEnchantment));
+            i++;
+            if (i >= maxLines) i = 0;
         }
 
         var lineCount = lines.size();
-        int maxLines = AvailabilityCategory.CONTENT_HEIGHT / (font.lineHeight + AvailabilityCategory.TEXT_ROW_SPACING);
         int pageCount = (int) Math.ceil((float) lines.size() / maxLines);
 
         var recipes = new ArrayList<AvailabilityRecipe>();
@@ -53,16 +58,6 @@ public record AvailabilityRecipe(Item item, List<FormattedText> enchantmentNames
         }
 
         return recipes;
-    }
-
-    private static List<FormattedText> createContent(ItemEnchantmentAvailability record) {
-        final var content = new ArrayList<FormattedText>();
-        {
-            for (var a : record.availableEnchantments()) {
-                content.add(Utils.nameWithLevels(a.enchantment()));
-            }
-        }
-        return content;
     }
 
 }
