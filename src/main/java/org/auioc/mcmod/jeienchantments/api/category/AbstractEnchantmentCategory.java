@@ -2,8 +2,11 @@ package org.auioc.mcmod.jeienchantments.api.category;
 
 import org.auioc.mcmod.jeienchantments.api.record.IEnchantmentRecord;
 import org.auioc.mcmod.jeienchantments.api.record.IPaginatedRecord;
+import org.auioc.mcmod.jeienchantments.gui.CopyableTextButton;
 import org.auioc.mcmod.jeienchantments.jei.JeieIngredientTypes;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -15,6 +18,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -35,9 +39,12 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     protected final IDrawable icon;
 
+    private final CopyableTextButton idButton;
+
     protected AbstractEnchantmentCategory(RecipeType<T> type, IGuiHelper guiHelper) {
         super(type, guiHelper, WIDTH, HEIGHT);
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(Items.ENCHANTED_BOOK));
+        this.idButton = new CopyableTextButton(0, 0, 0, new TextComponent("null"));
     }
 
     @Override
@@ -57,6 +64,12 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
         setAdditionalRecipe(builder, recipe, focuses);
     }
 
+    @Override
+    public boolean handleInput(T recipe, double mouseX, double mouseY, Key input) {
+        if (input.getType() == InputConstants.Type.MOUSE) return idButton.mouseClicked(mouseX, mouseY, input.getValue());
+        return false;
+    }
+
     // ====================================================================== //
 
     private int drawHeader(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
@@ -70,7 +83,9 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
         int y = HEADER_TEXT_Y;
 
         y = Utils.drawTextWarp(poseStack, font, name, HEADER_TEXT_X, y, HEADER_TEXT_WIDTH, 0);
-        y = Utils.drawTextWarp(poseStack, font, id, HEADER_TEXT_X, y, HEADER_TEXT_WIDTH, 0);
+        idButton.update(HEADER_TEXT_X, y, HEADER_TEXT_WIDTH, id);
+        idButton.render(poseStack, mouseX, mouseY);
+        y += idButton.getHeight();
 
         y += OFFSET_4;
         GuiComponent.fill(poseStack, OFFSET_4, y - OFFSET_1, TEXT_WIDTH, y, COLOR_GARY);
@@ -87,7 +102,7 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     // ====================================================================== //
 
-    public static int calcHeaderHeight(Enchantment enchantment, Font font) {
+    public static int calcHeaderHeight(Enchantment enchantment, Font font) { // TODO
         int h = SLOT_SIZE + (OFFSET_4 * 3);
         h += (font.split(Utils.nameWithLevels(enchantment), HEADER_TEXT_WIDTH).size() - 1) * font.lineHeight;
         h += (font.split(Utils.idText(enchantment), HEADER_TEXT_WIDTH).size() - 1) * font.lineHeight;

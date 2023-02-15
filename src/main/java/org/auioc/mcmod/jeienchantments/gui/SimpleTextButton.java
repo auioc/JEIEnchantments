@@ -13,19 +13,20 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SimpleTextButton extends AbstractWidget {
+public abstract class SimpleTextButton extends AbstractWidget {
 
-    private final Minecraft minecraft;
-    private final Font font;
-
-    public SimpleTextButton(int x, int y, int w, int h, Component message, Minecraft minecraft) {
-        super(x, y, w, h, message);
-        this.minecraft = minecraft;
-        this.font = minecraft.font;
-    }
+    protected final Minecraft minecraft;
+    protected final Font font;
 
     public SimpleTextButton(int x, int y, int w, int h, Component message) {
-        this(x, y, w, h, message, Minecraft.getInstance());
+        super(x, y, w, h, message);
+        this.minecraft = Minecraft.getInstance();
+        this.font = this.minecraft.font;
+    }
+
+    public SimpleTextButton(int x, int y, int w, Component message) {
+        this(x, y, w, 0, message);
+        this.setHeight(font.split(message, w).size() * font.lineHeight);
     }
 
     public SimpleTextButton(int x, int y, Component message) {
@@ -33,6 +34,8 @@ public class SimpleTextButton extends AbstractWidget {
         this.setWidth(font.width(message));
         this.setHeight(font.lineHeight);
     }
+
+    // ====================================================================== //
 
     public void render(PoseStack poseStack, double mouseX, double mouseY) {
         this.render(poseStack, (int) mouseX, (int) mouseY, 0);
@@ -45,7 +48,7 @@ public class SimpleTextButton extends AbstractWidget {
 
     @Override
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        Utils.drawCenteredText(poseStack, font, this.getMessage(), (x + (width / 2)), y, 0);
+        Utils.drawTextWarp(poseStack, font, this.getMessage(), x, y, width, 0);
         if (this.isHovered) {
             var tooltips = getTooltips();
             var screen = minecraft.screen;
@@ -53,6 +56,20 @@ public class SimpleTextButton extends AbstractWidget {
                 screen.renderComponentTooltip(poseStack, tooltips, mouseX, mouseY);
             }
         }
+    }
+
+    // ====================================================================== //
+
+    public void update(int x, int y, int w, int h, Component message) {
+        this.x = x;
+        this.y = y;
+        this.setWidth(w);
+        this.setHeight(h);
+        this.setMessage(message);
+    }
+
+    public void update(int x, int y, int w, Component message) {
+        update(x, y, w, (font.split(message, w).size() * font.lineHeight), message);
     }
 
     // ====================================================================== //
