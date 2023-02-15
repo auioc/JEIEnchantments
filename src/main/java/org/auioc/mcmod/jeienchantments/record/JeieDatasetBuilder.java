@@ -1,5 +1,7 @@
 package org.auioc.mcmod.jeienchantments.record;
 
+import static org.auioc.mcmod.jeienchantments.JEIEnchantments.LOGGER;
+import static org.auioc.mcmod.jeienchantments.record.JeieDataset.MARKER;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,13 +42,16 @@ public class JeieDatasetBuilder {
     }
 
     protected JeieDataset build() {
+        LOGGER.info(MARKER, "Building dataset");
+
+        int _ignE = 0, _ignI = 0;
         for (var ench : this.allEnchantments) {
-            if (JeieConfig.enchantmentBlacklist.contains(ench)) continue;
+            if (JeieConfig.enchantmentBlacklist.contains(ench)) { _ignE++; continue; }
             this.enchantments.add(ench);
             this.enchantmentCompatibilityMap.put(ench, EnchantmentCompatibility.create(ench, this.allEnchantments));
             for (var itemStack : allItemStacks) {
                 var item = itemStack.getItem();
-                if (JeieConfig.itemBlacklist.contains(item)) continue;
+                if (JeieConfig.itemBlacklist.contains(item)) { _ignI++; continue; }
                 boolean canApply = ench.canEnchant(itemStack);
                 boolean canApplyAtTable = !ench.isTreasureOnly() && ench.isDiscoverable() && (itemStack.getItemEnchantability() > 0) && ench.canApplyAtEnchantingTable(itemStack);
                 if (canApply || canApplyAtTable) {
@@ -58,6 +63,12 @@ public class JeieDatasetBuilder {
 
         this.enchantmentApplicabilityMap = createDataMap(_tempMap1.getMap(), EnchantmentApplicability::create);
         this.itemEnchantmentAvailabilityMap = createDataMap(_tempMap2.getMap(), ItemEnchantmentAvailability::create);
+
+        LOGGER.info(MARKER, "Ignored {} enchantments, {} items", _ignE, _ignI);
+        LOGGER.info(
+            MARKER, "Built dataset with {} enchantments, {} compatibility records, {} applicability records, {} availability records",
+            enchantments.size(), enchantmentCompatibilityMap.size(), enchantmentApplicabilityMap.size(), itemEnchantmentAvailabilityMap.size()
+        );
 
         return new JeieDataset(enchantments, enchantmentCompatibilityMap, enchantmentApplicabilityMap, itemEnchantmentAvailabilityMap);
     }

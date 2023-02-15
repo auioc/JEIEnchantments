@@ -1,8 +1,11 @@
 package org.auioc.mcmod.jeienchantments.config;
 
+import static org.auioc.mcmod.jeienchantments.JEIEnchantments.LOGGER;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.auioc.mcmod.jeienchantments.JEIEnchantments;
 import com.electronwill.nightconfig.core.CommentedConfig;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +21,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 @OnlyIn(Dist.CLIENT)
 public class JeieConfig {
+
+    protected static final Marker MARKER = MarkerManager.getMarker(JeieConfig.class.getSimpleName());
 
     public static final ForgeConfigSpec SPEC;
 
@@ -53,12 +58,22 @@ public class JeieConfig {
                 var id = new ResourceLocation(str);
                 if (_registry.containsKey(id)) {
                     _list.add(_registry.getValue(id));
+                } else {
+                    LOGGER.warn(MARKER, "Unknown registry entry '{}'", id.toString());
                 }
             } catch (Exception e) {
+                LOGGER.warn(MARKER, "Invalid namespaced identifier '{}'", str);
             }
         }
         if (configValue.size() != _list.size()) {
-            _configValue.set(_list.stream().map(IForgeRegistryEntry::getRegistryName).map(ResourceLocation::toString).toList());
+            var values = _list.stream().map(IForgeRegistryEntry::getRegistryName).map(ResourceLocation::toString).toList();
+            LOGGER.warn(
+                MARKER, "Incorrect key {} was corrected from [{}] to [{}]",
+                String.join("/", _configValue.getPath().toArray(String[]::new)),
+                String.join(",", configValue.toArray(String[]::new)),
+                String.join(",", values.toArray(String[]::new))
+            );
+            _configValue.set(values);
             SPEC.save();
         }
     }
