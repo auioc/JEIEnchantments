@@ -15,6 +15,8 @@ public final class JEIEnchantments {
 
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
+    private static boolean setupCompleted = false;
+
     public JEIEnchantments() {
         if (FMLEnvironment.dist == Dist.CLIENT) Initialization.init();
     }
@@ -25,6 +27,14 @@ public final class JEIEnchantments {
 
     public static String i18n(String key) {
         return MOD_ID + "." + key;
+    }
+
+    public static boolean isSetupCompleted() {
+        return setupCompleted;
+    }
+
+    protected static void setupCompleted() {
+        JEIEnchantments.setupCompleted = true;
     }
 
 }
