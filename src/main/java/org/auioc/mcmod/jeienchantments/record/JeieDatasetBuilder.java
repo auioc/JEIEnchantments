@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import org.auioc.mcmod.jeienchantments.api.record.IRegistryEntryRecord;
+import org.auioc.mcmod.jeienchantments.config.JeieConfig;
 import org.auioc.mcmod.jeienchantments.utils.Object2ListMapWarpper;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import net.minecraft.world.item.Item;
@@ -40,21 +41,19 @@ public class JeieDatasetBuilder {
 
     protected JeieDataset build() {
         for (var ench : this.allEnchantments) {
+            if (JeieConfig.enchantmentBlacklist.contains(ench)) continue;
             this.enchantments.add(ench);
             this.enchantmentCompatibilityMap.put(ench, EnchantmentCompatibility.create(ench, this.allEnchantments));
-            this.allItemStacks
-                .stream()
-                .forEach(
-                    (itemStack) -> {
-                        var item = itemStack.getItem();
-                        boolean canApply = ench.canEnchant(itemStack);
-                        boolean canApplyAtTable = !ench.isTreasureOnly() && ench.isDiscoverable() && (itemStack.getItemEnchantability() > 0) && ench.canApplyAtEnchantingTable(itemStack);
-                        if (canApply || canApplyAtTable) {
-                            _tempMap1.putElement(ench, new AppliableItem(item, canApply, canApplyAtTable));
-                            _tempMap2.putElement(item, new AvailableEnchantment(ench, canApply, canApplyAtTable));
-                        }
-                    }
-                );
+            for (var itemStack : allItemStacks) {
+                var item = itemStack.getItem();
+                if (JeieConfig.itemBlacklist.contains(item)) continue;
+                boolean canApply = ench.canEnchant(itemStack);
+                boolean canApplyAtTable = !ench.isTreasureOnly() && ench.isDiscoverable() && (itemStack.getItemEnchantability() > 0) && ench.canApplyAtEnchantingTable(itemStack);
+                if (canApply || canApplyAtTable) {
+                    _tempMap1.putElement(ench, new AppliableItem(item, canApply, canApplyAtTable));
+                    _tempMap2.putElement(item, new AvailableEnchantment(ench, canApply, canApplyAtTable));
+                }
+            }
         }
 
         this.enchantmentApplicabilityMap = createDataMap(_tempMap1.getMap(), EnchantmentApplicability::create);
