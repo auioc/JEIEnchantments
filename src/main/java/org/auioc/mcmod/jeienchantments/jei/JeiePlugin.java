@@ -12,7 +12,6 @@ import org.auioc.mcmod.jeienchantments.jei.recipe.AvailabilityRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.DescriptionRecipe;
 import org.auioc.mcmod.jeienchantments.jei.recipe.IncompatibilityRecipe;
 import org.auioc.mcmod.jeienchantments.record.JeieDataset;
-import org.auioc.mcmod.jeienchantments.utils.LazyObjectHolder;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -29,6 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @JeiPlugin
 @OnlyIn(Dist.CLIENT)
@@ -38,8 +38,7 @@ public class JeiePlugin implements IModPlugin {
 
     private static IJeiRuntime jeiRuntime;
     private static IJeiHelpers jeiHelpers;
-
-    private final LazyObjectHolder<JeieDataset> dataset = new LazyObjectHolder<>(JeieDataset::create);
+    private static JeieDataset dataset;
 
     public JeiePlugin() {}
 
@@ -49,7 +48,7 @@ public class JeiePlugin implements IModPlugin {
 
     @Override
     public void registerIngredients(IModIngredientRegistration registration) {
-        registration.register(JeieIngredientTypes.ENCHANTMENT, dataset.get().enchantments(), new EnchantmentIngredientHelper(), new EnchantmentIngredientRenderer());
+        registration.register(JeieIngredientTypes.ENCHANTMENT, ForgeRegistries.ENCHANTMENTS.getValues(), new EnchantmentIngredientHelper(), new EnchantmentIngredientRenderer());
     }
 
     @Override
@@ -66,14 +65,14 @@ public class JeiePlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         JeiePlugin.jeiHelpers = registration.getJeiHelpers();
+        JeiePlugin.dataset = JeieDataset.create();
 
-        var dataset = this.dataset.get();
+        registration.getIngredientManager().removeIngredientsAtRuntime(JeieIngredientTypes.ENCHANTMENT, ForgeRegistries.ENCHANTMENTS.getValues());
+
         registration.addRecipes(JeieCategories.DESCRIPTION, DescriptionRecipe.create(dataset.enchantments()));
         registration.addRecipes(JeieCategories.INCOMPATIBILITY, IncompatibilityRecipe.create(dataset.enchantmentCompatibilityMap()));
         registration.addRecipes(JeieCategories.APPLICABILITY, ApplicabilityRecipe.create(dataset.enchantmentApplicabilityMap()));
         registration.addRecipes(JeieCategories.AVILABILITY, AvailabilityRecipe.create(dataset.itemEnchantmentAvailabilityMap()));
-
-        registration.getIngredientManager().removeIngredientsAtRuntime(JeieIngredientTypes.ENCHANTMENT, dataset.enchantments());
     }
 
     @Override
@@ -105,5 +104,7 @@ public class JeiePlugin implements IModPlugin {
     public static IJeiRuntime getJeiRuntime() { return jeiRuntime; }
 
     public static IJeiHelpers getJeiHelpers() { return jeiHelpers; }
+
+    public static JeieDataset getDataset() { return dataset; }
 
 }
