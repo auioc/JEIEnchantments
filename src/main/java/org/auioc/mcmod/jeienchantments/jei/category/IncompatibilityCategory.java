@@ -14,8 +14,6 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -55,7 +53,7 @@ public class IncompatibilityCategory extends AbstractRecipeCategory<Incompatibil
         super(JeieCategories.INCOMPATIBILITY, guiHelper, WIDTH, HEIGHT);
         anvilBackground = guiHelper.createDrawable(ANVIL_GUI_TEXTURE, ANVIL_BACKGROUND_U, ANVIL_BACKGROUND_V, ANVIL_BACKGROUND_WIDTH, ANVIL_BACKGROUND_HEIGHT);
         anvilRedCross = guiHelper.createDrawable(ANVIL_GUI_TEXTURE, ANVIL_RED_CROSS_U, ANVIL_RED_CROSS_V, ANVIL_RED_CROSS_WIDTH, ANVIL_RED_CROSS_HEIGHT);
-        this.icon = guiHelper.createDrawableItemStack(new ItemStack(Items.ENCHANTED_BOOK));
+        this.icon = guiHelper.createDrawableItemStack(Utils.emptyBook());
     }
 
     @Override
@@ -68,9 +66,8 @@ public class IncompatibilityCategory extends AbstractRecipeCategory<Incompatibil
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, IncompatibilityRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, SLOT_1_X, SLOTS_Y).addItemStacks(Utils.createBooks(recipe.enchantment()));
-        builder.addSlot(RecipeIngredientRole.OUTPUT, SLOT_2_X, SLOTS_Y).addItemStacks(Utils.createBooks(recipe.otherEnchantment()));
-        builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.otherEnchantment());
+        builder.addSlot(RecipeIngredientRole.INPUT, SLOT_1_X, SLOTS_Y).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.enchantment());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, SLOT_2_X, SLOTS_Y).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.otherEnchantment());
     }
 
     @Override

@@ -8,8 +8,6 @@ import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,7 +19,7 @@ public class EnchantmentIngredientRenderer implements IIngredientRenderer<Enchan
     @Override
     public void render(PoseStack poseStack, Enchantment ingredient) {
         if (ingredient != null) {
-            var fakeBook = new ItemStack(Items.ENCHANTED_BOOK);
+            var fakeBook = Utils.emptyBook();
             var modelViewStack = RenderSystem.getModelViewStack();
             modelViewStack.pushPose();
             {

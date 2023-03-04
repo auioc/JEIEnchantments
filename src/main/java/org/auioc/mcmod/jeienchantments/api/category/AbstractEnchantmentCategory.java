@@ -19,8 +19,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -43,7 +41,7 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     protected AbstractEnchantmentCategory(RecipeType<T> type, IGuiHelper guiHelper) {
         super(type, guiHelper, WIDTH, HEIGHT);
-        this.icon = guiHelper.createDrawableItemStack(new ItemStack(Items.ENCHANTED_BOOK));
+        this.icon = guiHelper.createDrawableItemStack(Utils.emptyBook());
         this.idButton = new CopyableTextButton(0, 0, 0, new TextComponent("null"));
     }
 
@@ -59,8 +57,7 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     @Override
     public final void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses) {
-        builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.enchantment());
-        builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addItemStacks(Utils.createBooks(recipe.enchantment()));
+        builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.enchantment());
         setAdditionalRecipe(builder, recipe, focuses);
     }
 
@@ -102,7 +99,7 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
 
     // ====================================================================== //
 
-    public static int calcHeaderHeight(Enchantment enchantment, Font font) { // TODO
+    public static int calcHeaderHeight(Enchantment enchantment, Font font) {
         int h = SLOT_SIZE + (OFFSET_4 * 3);
         h += (font.split(Utils.nameWithLevels(enchantment), HEADER_TEXT_WIDTH).size() - 1) * font.lineHeight;
         h += (font.split(Utils.idText(enchantment), HEADER_TEXT_WIDTH).size() - 1) * font.lineHeight;

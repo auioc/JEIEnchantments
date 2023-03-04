@@ -5,10 +5,12 @@ import org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory;
 import org.auioc.mcmod.jeienchantments.jei.JeieCategories;
 import org.auioc.mcmod.jeienchantments.jei.JeieIngredientTypes;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AvailabilityRecipe;
+import org.auioc.mcmod.jeienchantments.utils.Utils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Key;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -29,9 +31,15 @@ public class AvailabilityCategory extends AbstractPagedCategory<AvailabilityReci
     public static final int CONTENT_X = SLOT_X + SLOT_SIZE + OFFSET_4;
     public static final int CONTENT_Y = SLOT_Y;
 
+    private final IDrawable icon;
+
     public AvailabilityCategory(IGuiHelper guiHelper) {
         super(JeieCategories.AVILABILITY, guiHelper, WIDTH, HEIGHT);
+        this.icon = guiHelper.createDrawableItemStack(Utils.emptyBook());
     }
+
+    @Override
+    public IDrawable getIcon() { return this.icon; }
 
     @Override
     public void draw(AvailabilityRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {

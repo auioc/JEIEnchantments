@@ -21,6 +21,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -53,6 +54,10 @@ public class Utils {
     }
 
     // ====================================================================== //
+
+    public static ItemStack emptyBook() {
+        return new ItemStack(Items.ENCHANTED_BOOK);
+    }
 
     public static ItemStack createBook(Enchantment enchantment, int lvl) {
         return EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, lvl));
