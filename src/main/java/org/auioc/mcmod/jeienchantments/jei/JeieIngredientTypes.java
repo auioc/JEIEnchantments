@@ -9,10 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class JeieIngredientTypes {
 
     /**
-     * For recipe lookup only, should not be displayed in the ingredient list.
-     *
-     * @see org.auioc.mcmod.jeienchantments.jei.ingredient.EnchantmentIngredientRenderer#render
-     *      It will render as a purple square if not hidden.
+     * Should not be displayed in the ingredient list.
      */
     public static final IIngredientType<Enchantment> ENCHANTMENT = () -> Enchantment.class;
 
