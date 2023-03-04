@@ -12,11 +12,12 @@ import org.auioc.mcmod.jeienchantments.record.ItemEnchantmentAvailability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public record AvailabilityRecipe(Item item, List<AvailableEnchantmentTextButton> enchantmentNames, int page, int pageCount) implements IItemRecord, IPaginatedRecord {
+public record AvailabilityRecipe(Item item, List<AvailableEnchantmentTextButton> enchantmentNames, List<Enchantment> enchantments, int page, int pageCount) implements IItemRecord, IPaginatedRecord {
 
     public static List<AvailabilityRecipe> create(Map<Item, ItemEnchantmentAvailability> map) {
         return map.entrySet().stream().map(AvailabilityRecipe::create).flatMap(List::stream).toList();
@@ -33,12 +34,14 @@ public record AvailabilityRecipe(Item item, List<AvailableEnchantmentTextButton>
 
         int maxLines = AvailabilityCategory.CONTENT_HEIGHT / (font.lineHeight + AvailabilityCategory.TEXT_ROW_SPACING);
 
-        var enchantments = record.availableEnchantments();
+        var availableEnchantments = record.availableEnchantments();
+        var enchantments = new ArrayList<Enchantment>(availableEnchantments.size());
 
         int i = 0;
-        for (var availableEnchantment : enchantments) {
+        for (var availableEnchantment : availableEnchantments) {
             int y = AvailabilityCategory.CONTENT_Y + i * (font.lineHeight + AvailabilityCategory.TEXT_ROW_SPACING);
             lines.add(new AvailableEnchantmentTextButton(AvailabilityCategory.CONTENT_X, y, availableEnchantment));
+            enchantments.add(availableEnchantment.enchantment());
             i++;
             if (i >= maxLines) i = 0;
         }
@@ -52,6 +55,7 @@ public record AvailabilityRecipe(Item item, List<AvailableEnchantmentTextButton>
                 new AvailabilityRecipe(
                     item,
                     lines.subList(p * maxLines, Math.min((p + 1) * maxLines, lineCount)),
+                    enchantments,
                     (p + 1), pageCount
                 )
             );

@@ -3,6 +3,7 @@ package org.auioc.mcmod.jeienchantments.jei.category;
 import org.auioc.mcmod.jeienchantments.api.category.AbstractPagedCategory;
 import org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory;
 import org.auioc.mcmod.jeienchantments.jei.JeieCategories;
+import org.auioc.mcmod.jeienchantments.jei.JeieIngredientTypes;
 import org.auioc.mcmod.jeienchantments.jei.recipe.AvailabilityRecipe;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Key;
@@ -43,6 +44,9 @@ public class AvailabilityCategory extends AbstractPagedCategory<AvailabilityReci
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AvailabilityRecipe recipe, IFocusGroup focuses) {
+        for (var enchantment : recipe.enchantments()) {
+            builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addIngredient(JeieIngredientTypes.ENCHANTMENT, enchantment);
+        }
         builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addItemStack(new ItemStack(recipe.item()));
     }
 

@@ -2,6 +2,7 @@ package org.auioc.mcmod.jeienchantments.jei.category;
 
 import org.auioc.mcmod.jeienchantments.api.category.AbstractRecipeCategory;
 import org.auioc.mcmod.jeienchantments.jei.JeieCategories;
+import org.auioc.mcmod.jeienchantments.jei.JeieIngredientTypes;
 import org.auioc.mcmod.jeienchantments.jei.recipe.IncompatibilityRecipe;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -69,6 +70,7 @@ public class IncompatibilityCategory extends AbstractRecipeCategory<Incompatibil
     public void setRecipe(IRecipeLayoutBuilder builder, IncompatibilityRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, SLOT_1_X, SLOTS_Y).addItemStacks(Utils.createBooks(recipe.enchantment()));
         builder.addSlot(RecipeIngredientRole.OUTPUT, SLOT_2_X, SLOTS_Y).addItemStacks(Utils.createBooks(recipe.otherEnchantment()));
+        builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.otherEnchantment());
     }
 
     @Override
