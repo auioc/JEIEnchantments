@@ -20,6 +20,7 @@
 ## Credits
 
 - [AUIOC](https://www.auioc.com)
+- [HaruhiFanClub](https://github.com/HaruhiFanClub)
 - [Libellule505](https://github.com/Libellule505)
 
 ## Contributing

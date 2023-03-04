@@ -6,6 +6,9 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/**
+ * @see <a href="https://github.com/auioc/arnicalib-mcmod/blob/203877c65e99f3b942fd4df3f7e5c97e6e33ca4b/src/main/java/org/auioc/mcmod/arnicalib/game/gui/component/CopyableTextWidget.java">ArnicaLib: CopyableTextWidget.java</a>
+ */
 @OnlyIn(Dist.CLIENT)
 public class CopyableTextButton extends SimpleTextButton {
 
