@@ -1,5 +1,6 @@
 package org.auioc.mcmod.jeienchantments.utils;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -79,6 +80,14 @@ public class Utils {
                 return itemStack;
             })
             .toList();
+    }
+
+    public static boolean isBook(ItemStack itemStack) {
+        return itemStack.is(Items.ENCHANTED_BOOK);
+    }
+
+    public static Collection<ItemStack> filterBooks(Collection<ItemStack> itemStacks) {
+        return itemStacks.stream().filter(Utils::isBook).toList();
     }
 
     // ====================================================================== //

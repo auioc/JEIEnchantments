@@ -68,6 +68,8 @@ public class IncompatibilityCategory extends AbstractRecipeCategory<Incompatibil
     public void setRecipe(IRecipeLayoutBuilder builder, IncompatibilityRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, SLOT_1_X, SLOTS_Y).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.enchantment());
         builder.addSlot(RecipeIngredientRole.OUTPUT, SLOT_2_X, SLOTS_Y).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.otherEnchantment());
+        builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStacks(Utils.createBooks(recipe.otherEnchantment()));
+        builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStacks(Utils.createBooks(recipe.enchantment()));
     }
 
     @Override

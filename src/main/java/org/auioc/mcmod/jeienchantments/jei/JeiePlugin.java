@@ -15,6 +15,7 @@ import org.auioc.mcmod.jeienchantments.record.JeieDataset;
 import org.auioc.mcmod.jeienchantments.utils.Utils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IModIngredientRegistration;
@@ -67,7 +68,11 @@ public class JeiePlugin implements IModPlugin {
         JeiePlugin.jeiHelpers = registration.getJeiHelpers();
         JeiePlugin.dataset = JeieDataset.create();
 
-        registration.getIngredientManager().removeIngredientsAtRuntime(JeieIngredientTypes.ENCHANTMENT, ForgeRegistries.ENCHANTMENTS.getValues());
+        var ingredientManager = registration.getIngredientManager();
+        ingredientManager.removeIngredientsAtRuntime(
+            VanillaTypes.ITEM_STACK,
+            Utils.filterBooks(ingredientManager.getAllIngredients(VanillaTypes.ITEM_STACK))
+        );
 
         registration.addRecipes(JeieCategories.DESCRIPTION, DescriptionRecipe.create(dataset.enchantments()));
         registration.addRecipes(JeieCategories.INCOMPATIBILITY, IncompatibilityRecipe.create(dataset.enchantmentCompatibilityMap()));

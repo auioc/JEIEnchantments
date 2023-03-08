@@ -54,6 +54,7 @@ public class AvailabilityCategory extends AbstractPagedCategory<AvailabilityReci
     public void setRecipe(IRecipeLayoutBuilder builder, AvailabilityRecipe recipe, IFocusGroup focuses) {
         for (var enchantment : recipe.enchantments()) {
             builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addIngredient(JeieIngredientTypes.ENCHANTMENT, enchantment);
+            builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStacks(Utils.createBooks(enchantment));
         }
         builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addItemStack(new ItemStack(recipe.item()));
     }

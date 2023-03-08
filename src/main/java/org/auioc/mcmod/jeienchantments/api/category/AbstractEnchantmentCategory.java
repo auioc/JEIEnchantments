@@ -58,6 +58,7 @@ public abstract class AbstractEnchantmentCategory<T extends IEnchantmentRecord &
     @Override
     public final void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, SLOT_X + SLOT_PADDING, SLOT_Y + SLOT_PADDING).addIngredient(JeieIngredientTypes.ENCHANTMENT, recipe.enchantment());
+        builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStacks(Utils.createBooks(recipe.enchantment()));
         setAdditionalRecipe(builder, recipe, focuses);
     }
 
