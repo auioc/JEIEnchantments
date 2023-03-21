@@ -51,7 +51,7 @@ public record DescriptionRecipe(Enchantment enchantment, List<FormattedText> des
             content.add(Utils.guiListMarker("tradeable").append(Utils.guiYesNo(enchantment.isTradeable())));
             content.add(Utils.guiListMarker("treasure_only").append(Utils.guiYesNo(enchantment.isTreasureOnly())));
             content.add(null);
-            content.add(Utils.desc(enchantment));
+            content.addAll(Utils.descList(enchantment));
         }
         return content;
     }

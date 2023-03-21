@@ -1,5 +1,6 @@
 package org.auioc.mcmod.jeienchantments.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -12,6 +13,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -140,6 +142,33 @@ public class Utils {
         return (Language.getInstance().has(key)) ? i10n(key) : guiText("missing_description").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC);
     }
 
+    public static List<Component> descList(Enchantment enchantment) {
+        final var list = new ArrayList<Component>();
+        {
+            var key = enchantment.getDescriptionId() + ".desc";
+            boolean missing = true;
+            if (I18n.exists(key)) {
+                list.add(text("").append(leadingEmspC6()).append(Utils.i10n(key)));
+                missing = false;
+            }
+            {
+                int i = 1;
+                while (true) {
+                    var keyI = key + "." + i;
+                    if (I18n.exists(keyI)) {
+                        list.add(text("").append(leadingEmspC6()).append(Utils.i10n(keyI)));
+                        i++;
+                    } else break;
+                }
+                if (i != 1) missing = false;
+            }
+            if (missing) {
+                list.add(guiText("missing_description").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            }
+        }
+        return list;
+    }
+
     public static MutableComponent lvlText(int lvl) {
         return i10n("enchantment.level." + lvl);
     }
@@ -187,6 +216,10 @@ public class Utils {
 
     public static MutableComponent guiYesNo(boolean _bool) {
         return guiText(_bool ? "yes" : "no");
+    }
+
+    public static Component leadingEmspC6() {
+        return new TextComponent("\u2003").withStyle((style) -> style.withColor(0xC6C6C6));
     }
 
     // ====================================================================== //
